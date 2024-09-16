@@ -30,7 +30,7 @@ def create_model():
     model.add(layers.Embedding(input_dim=max_words, output_dim=128, input_length=max_len))
     model.add(layers.Flatten())
     model.add(layers.Dense(256, activation='relu'))
-    model.add(layers.Dense(15, activation='softmax'))  # 15 classes
+    model.add(layers.Dense(15, activation='softmax'))
 
     model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
                   loss='sparse_categorical_crossentropy',
@@ -52,7 +52,7 @@ def model_report(model, sentences, labels):
 def confusion_matrix(sentences, labels):
     # Get the predictions for the test set
     y_pred = model.predict(sentences)
-    y_pred_labels = np.argmax(y_pred, axis=1)  # Convert probabilities to predicted class labels
+    y_pred_labels = np.argmax(y_pred, axis=1)
     y_true_labels = labels
 
     cm = sklearn_confusion_matrix(y_true_labels, y_pred_labels)
