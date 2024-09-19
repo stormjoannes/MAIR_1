@@ -1,0 +1,23 @@
+{
+    "ack": ["kay", "okay"],
+    "affirm": ["yes", "right", "yeah"],
+    "thankyou": ["thank"],
+    "bye": ["bye", "goodbye"],
+    "confirm": ["is it", "does it", "do they"],
+    "deny": ["wrong", "dont", "not"],
+    "hello": ["hi", "hello", "halo", "welcome"],
+    "inform": [
+        "looking", "restaurant", "any", "food", "part", "town", "cheap", "expensive",
+        "mediterranean", "seafood", "east", "west", "north", "south", "asian",
+        "oriental", "scottish", "matter", "european", "want", "care", "austrian",
+        "center", "corsica", "international", "priced", "moderately", "moderate",
+        "central", "eirtrean", "spanish", "venue", "australian", "turkish"
+    ],
+    "negate": ["no"],
+    "null": [],
+    "repeat": ["repeat", "again", "back"],
+    "reqalts": ["how about", "what about", "is there", "anything else"],
+    "reqmore": ["more"],
+    "request": ["address", "phone", "number", "post code", "how much", "where", "whats", "what is", "price range"],
+    "restart": ["start", "reset"]
+}
