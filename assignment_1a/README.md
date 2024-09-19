@@ -1,5 +1,5 @@
 # Methods in AI Research Assignment 1
-This repository contains the code for the first assignment of the Methods in AI Research course at the University of Amsterdam. The assignment consists of implementing a simple neural network from scratch and training it on the MNIST dataset.\
+This repository contains the code for the first assignment of the Methods in AI Research course at the University of Utrecht The assignment consists of implementing a simple neural network from scratch and training it on a dialoge dataset.\
 It contains the two rule based baseline models in file `baselines.py`.
 The keywords for these baselines are located in `keywords.json`.
 
