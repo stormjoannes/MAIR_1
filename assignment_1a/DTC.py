@@ -48,8 +48,8 @@ def train_decision_tree_classifier(X_train, y_train):
 def evaluate_model(model, X_test, y_test):
     y_pred = model.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred)
-    print(f"Decision Tree model accuracy: {accuracy:.2f}")
-    print(classification_report(y_test, y_pred))
+    # print(f"Decision Tree model accuracy: {accuracy:.2f}")
+    # print(classification_report(y_test, y_pred))
 
 # Interactive classification
 def classify_sentence(model, vectorizer):
@@ -77,16 +77,16 @@ clf_tree = train_decision_tree_classifier(X_train, y_train)
 evaluate_model(clf_tree, X_test, y_test)
 
 # Interactive sentence classification
-print("\nInteractive test with the Decision Tree model:")
-classify_sentence(clf_tree, vectorizer)
+# print("\nInteractive test with the Decision Tree model:")
+# classify_sentence(clf_tree, vectorizer)
 
 # Accuracy - Training set
-train_predictions = clf_tree.predict(X_train)
-train_accuracy = accuracy_score(y_train, train_predictions)
+# train_predictions = clf_tree.predict(X_train)
+# train_accuracy = accuracy_score(y_train, train_predictions)
 
 # Accuracy - Test set
-test_predictions = clf_tree.predict(X_test)
-test_accuracy = accuracy_score(y_test, test_predictions)
-
-print(f"Training Accuracy: {train_accuracy}")
-print(f"Test Accuracy: {test_accuracy}")
+# test_predictions = clf_tree.predict(X_test)
+# test_accuracy = accuracy_score(y_test, test_predictions)
+#
+# print(f"Training Accuracy: {train_accuracy}")
+# print(f"Test Accuracy: {test_accuracy}")
