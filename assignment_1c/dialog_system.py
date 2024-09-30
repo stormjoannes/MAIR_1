@@ -1,4 +1,4 @@
-from assignment_1a.DTC import vectorizer, clf_tree
+from DTC import vectorizer, clf_tree
 from algorithm import TextProcessor
 from restaurant_selector import RestaurantSelector
 
@@ -7,7 +7,7 @@ class DialogManager:
         self.state = "welcome"
         self.formality = "formal"
         self.preferences = {
-            "area": None,
+            "location": None,
             "food_type": None,
             "price_range": None,
             "romantic": None,
@@ -66,15 +66,48 @@ class DialogManager:
         print("System: The dialog has been reset. How may I assist you?")
 
     def ask_additional_requirements(self):
-        print("System: Do you have any specific requirements like needing a romantic setting or a place suitable for children?")
-        user_input = input("You: ").lower()
-        self.extract_additional_preferences(user_input)
+        if self.preferences.get('romantic') is not None or self.preferences.get('children') is not None:
+            print("System: Got it. Let's find the perfect spot for you!")
+            self.state = "make_recommendation"
+        else:
+            print(
+                "System: Do you have any specific requirements like needing a romantic setting or a place suitable for children?")
 
     def extract_additional_preferences(self, user_input):
-        if 'romantic' in user_input:
-            self.preferences['romantic'] = True
-        if 'children' in user_input:
-            self.preferences['children'] = True
+        if 'romantic' in user_input or 'children' in user_input:
+            if 'romantic' in user_input:
+                self.preferences['romantic'] = True if 'yes' in user_input or 'romantic' in user_input else False
+            if 'children' in user_input:
+                self.preferences['children'] = True if 'yes' in user_input or 'children' in user_input else False
+            self.state = "make_recommendation"
+        else:
+            self.state = "ask_additional_requirements"  # Ensure correct state transition
+
+    def redirection(self, category):
+        if self.state != "welcome":
+            self.response = False
+
+        if category == "food_type":
+            if self.preferences["location"] is None:
+                self.state = "ask_location"
+            elif self.preferences["price_range"] is None:
+                self.state = "ask_price_range"
+            else:
+                self.state = "make_recommendation"
+        elif category == "location":
+            if self.preferences["food_type"] is None:
+                self.state = "ask_food_type"
+            elif self.preferences["price_range"] is None:
+                self.state = "ask_price_range"
+            else:
+                self.state = "make_recommendation"
+        else:  # price_range
+            if self.preferences["location"] is None:
+                self.state = "ask_location"
+            elif self.preferences["food_type"] is None:
+                self.state = "ask_food_type"
+            else:
+                self.state = "make_recommendation"
 
     def extract_preferences(self, user_utterance):
         categories = self.text_processor.categorize_words(user_utterance)
@@ -85,14 +118,18 @@ class DialogManager:
             self.ask_additional_requirements()
 
     def preferences_ready(self):
-        return all(self.preferences[key] is not None for key in ['area', 'food_type', 'price_range'])
+        return all(self.preferences[key] is not None for key in ['location', 'food_type', 'price_range'])
 
     def make_recommendation(self):
-        recommendation, reasoning, remaining_options = self.restaurant_selector.recommend_restaurant(
+        # Applying rules to determine properties like 'romantic' and 'children'
+        properties = self.apply_rules()
+
+        # Making recommendation based on preferences and inferred properties
+        recommendation, remaining_options = self.restaurant_selector.recommend_restaurant(
             self.preferences['food_type'],
             self.preferences['price_range'],
-            self.preferences['area'],
-            self.preferences
+            self.preferences['location'],
+            properties  # Pass the inferred properties
         )
         if isinstance(recommendation, str):
             print(recommendation)
@@ -102,20 +139,20 @@ class DialogManager:
 
         self.restaurant = recommendation
         self.other_options = remaining_options
-        print(f"System: Recommending '{recommendation['restaurantname']}', an {self.preferences['price_range']} {self.preferences['food_type']} restaurant in {self.preferences['area']}. {reasoning}")
+        print(
+            f"System: Recommending '{recommendation['restaurantname']}', an {self.preferences['price_range']} {self.preferences['food_type']} restaurant in {self.preferences['location']}.")
         self.state = "request_further_details"
 
     def handle_state(self, dialog_act, user_utterance):
         if self.state == "welcome":
             if dialog_act == "hello":
-                print("System: Welcome! Please, tell me the area where you want to find a restaurant.")
-                self.state = "ask_area"
+                print("System: Welcome! Please, tell me the location where you want to find a restaurant.")
+                self.state = "ask_location"
             elif dialog_act == "inform":
                 self.extract_preferences(user_utterance)
-                self.response = False
-                self.state = "ask_area" if not self.preferences["area"] else "ask_food_type"
+                self.state = "ask_location" if not self.preferences["location"] else "ask_food_type"
             elif dialog_act == "restart":
-                self.state = "start_over"
+                self.reset_dialog()
             elif dialog_act in ["bye", "negate"]:
                 self.state = "goodbye"
                 print("System: Goodbye!")
@@ -123,18 +160,16 @@ class DialogManager:
                 print("System: Sorry, I didn't understand. Could you tell me your preferences again?")
 
         elif self.state == "start_over":
-            print("System: We start over!")
-            self.preferences = {key: None for key in self.preferences}
-            self.state = "welcome"
+            self.reset_dialog()
 
-        elif self.state == "ask_area":
+        elif self.state == "ask_location":
             if dialog_act == "inform":
                 self.extract_preferences(user_utterance)
-                if self.preferences["area"]:
-                    print(f"System: Got it, you're looking for a restaurant in {self.preferences['area']}.")
-                    self.redirection("area")
+                if self.preferences["location"]:
+                    print(f"System: Got it, you're looking for a restaurant in {self.preferences['location']}.")
+                    self.state = "ask_food_type"
                 else:
-                    print("System: Could you please tell me the area you want to find a restaurant?")
+                    print("System: Could you please tell me the location you want to find a restaurant?")
             elif dialog_act in ["bye", "negate"]:
                 self.state = "goodbye"
                 print("System: Goodbye!")
@@ -143,7 +178,8 @@ class DialogManager:
             if dialog_act == "inform":
                 self.extract_preferences(user_utterance)
                 if self.preferences["food_type"]:
-                    print(f"System: Great, you're looking for {self.preferences['food_type']} food. What's your price range?")
+                    print(
+                        f"System: Great, you're looking for {self.preferences['food_type']} food. What's your price range?")
                     self.state = "ask_price_range"
                 else:
                     print("System: Could you please tell me the type of food you prefer?")
@@ -155,13 +191,21 @@ class DialogManager:
             if dialog_act == "inform":
                 self.extract_preferences(user_utterance)
                 if self.preferences["price_range"]:
-                    print(f"System: You're looking for a {self.preferences['price_range']} restaurant. I'll find the best options for you!")
-                    self.state = "make_recommendation"
+                    print(
+                        f"System: You're looking for a {self.preferences['price_range']} restaurant.")
+                    self.state = "ask_specific_requirements"
                 else:
                     print("System: Could you please tell me your price range?")
             elif dialog_act in ["bye", "negate"]:
                 self.state = "goodbye"
                 print("System: Goodbye!")
+
+        elif self.state == "ask_specific_requirements":
+            self.extract_additional_preferences(user_utterance)
+            if self.preferences_ready():
+                self.state = "make_recommendation"
+            else:
+                print("System: Please specify if you need a romantic setting or a place suitable for children.")
 
         elif self.state == "make_recommendation":
             self.make_recommendation()
