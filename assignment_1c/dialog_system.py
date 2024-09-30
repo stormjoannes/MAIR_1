@@ -18,6 +18,28 @@ class DialogManager:
         self.other_options = None
         self.text_processor = TextProcessor()
         self.restaurant_selector = RestaurantSelector()
+        self.rules = {
+            1: {'antecedents': [('price_range', 'cheap'), ('food_quality', 'good')], 'consequent': ('touristic', True), 'description': 'A cheap restaurant with good food attracts tourists'},
+            2: {'antecedents': [('cuisine', 'Romanian')], 'consequent': ('touristic', False), 'description': 'Romanian cuisine is unknown for most tourists and they prefer familiar food'},
+            3: {'antecedents': [('crowdedness', 'busy')], 'consequent': ('assigned_seats', True), 'description': 'In a busy restaurant the waiter decides where you sit'},
+            4: {'antecedents': [('stay_duration', 'long')], 'consequent': ('suitable_for_children', False), 'description': 'Spending a long time is not advised when taking children'},
+            5: {'antecedents': [('crowdedness', 'busy')], 'consequent': ('romantic', False), 'description': 'A busy restaurant is not romantic'},
+            6: {'antecedents': [('stay_duration', 'long')], 'consequent': ('romantic', True), 'description': 'Spending a long time in a restaurant is romantic'},
+        }
+
+    def apply_rules(self):
+        properties = {}  # Track properties like 'romantic', 'touristic', etc.
+        for rule_id, rule in self.rules.items():
+            if all(self.preferences.get(ant[0]) == ant[1] for ant in rule['antecedents']):
+                consequent, value = rule['consequent']
+                if consequent in properties:
+                    # Handling contradictions
+                    if properties[consequent] != value:
+                        print(f"Contradiction detected for {consequent}. Resolving based on user input or additional logic.")
+                        # Resolution logic could go here
+                        continue
+                properties[consequent] = value
+        return properties
 
     def classify_dialog_act(self, user_utterance):
         input_bow = vectorizer.transform([user_utterance])
