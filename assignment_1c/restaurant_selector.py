@@ -18,46 +18,57 @@ class RestaurantSelector:
 
         return filtered_df
 
-    def apply_inference_rules(self, restaurant):
-        """
-        Applies inference rules to determine additional properties for a restaurant.
-
-        Parameters:
-            restaurant (pd.Series): A pandas Series containing the properties of a restaurant.
-
-        Returns:
-            pd.Series: Updated restaurant properties with inferred values.
-        """
-        if restaurant['cheap'] and restaurant['good_food']:
-            restaurant['touristic'] = True
-
-        if restaurant['cuisine'] == 'romanian':
-            restaurant['touristic'] = False
-
-        if restaurant['busy']:
-            restaurant['assigned_seats'] = True
-
+    def apply_inference_rules(self, restaurant, user_preferences):
+        # Dynamically determine which rules to apply based on user preferences
+        properties = {}
+        # Rule 1: Cheap and good food attracts tourists
+        if user_preferences.get('price_range') == 'cheap' and restaurant['food_quality'] == 'good':
+            properties['touristic'] = True
+        # Rule 2: Romanian cuisine is not typically touristic
+        if restaurant['food'] == 'Romanian':
+            properties['touristic'] = False
+        # Rule 3: Busy places have assigned seats
+        if restaurant['crowdedness'] == 'busy':
+            properties['assigned_seats'] = True
+        # Rule 4: Not suitable for children if stay is long
         if restaurant['length_of_stay'] == 'long':
-            restaurant['children'] = False
-
-        if restaurant['busy']:
-            restaurant['romantic'] = False
-
+            properties['suitable_for_children'] = False
+        # Rule 5 & 6: Romantic settings
+        if restaurant['crowdedness'] == 'busy':
+            properties['romantic'] = False
         if restaurant['length_of_stay'] == 'long':
-            restaurant['romantic'] = True
+            properties['romantic'] = True
+
+        # Update restaurant info based on properties deduced from rules
+        for key, value in properties.items():
+            restaurant[key] = value
 
         return restaurant
 
-    def recommend_restaurant(self, food_type=None, price_range=None, area=None):
+    def recommend_restaurant(self, food_type=None, price_range=None, area=None, user_preferences=None):
+        # Initial filtering based on directly available columns
         filtered_restaurants = self.filter_restaurants(food_type, price_range, area)
+
+        # Apply inference rules to each restaurant based on user preferences
+        filtered_restaurants = filtered_restaurants.apply(lambda x: self.apply_inference_rules(x, user_preferences),
+                                                          axis=1)
+
+        # Further filtering based on specific user preferences for properties like 'romantic' and 'children'
+        if user_preferences:
+            if 'romantic' in user_preferences:
+                filtered_restaurants = filtered_restaurants[
+                    filtered_restaurants['romantic'] == user_preferences['romantic']]
+            if 'children' in user_preferences:
+                filtered_restaurants = filtered_restaurants[
+                    filtered_restaurants['children'] == user_preferences['children']]
 
         if filtered_restaurants.empty:
             return "Sorry, no restaurant matches your preferences.", None
 
-        # Apply inference rules to each restaurant and then select a random one for recommendation
-        filtered_restaurants = filtered_restaurants.apply(self.apply_inference_rules, axis=1)
-
+        # Select a random restaurant for recommendation
         recommendation = filtered_restaurants.sample(n=1).iloc[0]
         remaining_restaurants = filtered_restaurants.drop(recommendation.name)
 
         return recommendation, remaining_restaurants
+
+
