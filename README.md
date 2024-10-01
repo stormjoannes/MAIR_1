@@ -25,3 +25,9 @@ Normally you would't add data files to your github, but since this simplifies th
 This repository contains the code for the first assignment of the Methods in AI Research course at Utrecht University. The assignment consists of implementing a dialog system to help someone finding a restaurant in Cambridge.
 
 To use the dialog system simply run the `main.py` file. This will start the dialog system and you can start asking questions.
+The new features we implemented are the following:
+- Levenshtein edit distance for preference extraction
+- A user can now restart the questions by saying 'restart' after the suggestion.
+- A user can now receive a small amount of recommendations instead of one.
+- A user is now able to change previous answers if there is no suggestions available.
+- A user can now receive formal and informal reactions.
