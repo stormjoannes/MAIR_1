@@ -63,7 +63,7 @@ class RestaurantSelector:
                     filtered_restaurants['children'] == user_preferences['children']]
 
         if filtered_restaurants.empty:
-            return "Sorry, no restaurant matches your preferences.", None
+            return "System: Sorry, no restaurant matches your preferences.", None
 
         # Select a random restaurant for recommendation
         recommendation = filtered_restaurants.sample(n=1).iloc[0]

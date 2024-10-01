@@ -25,7 +25,8 @@ class RestaurantSelector:
         filtered_restaurants = self.filter_restaurants(food_type, price_range, area)
 
         if filtered_restaurants.empty:
-            return "Sorry, no restaurant matches your preferences.", None
+            return "System: Sorry, no restaurant matches your preferences.", None
+
 
         recommendation = filtered_restaurants.sample(n=1).iloc[0]
         remaining_restaurants = filtered_restaurants.drop(recommendation.name)

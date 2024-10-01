@@ -18,6 +18,8 @@ class DialogManager:
         self.other_options = None
         self.text_processor = TextProcessor()
         self.restaurant_selector = RestaurantSelector()
+        self.changes_counter = 0
+        self.preferences_name = list(self.preferences.keys())
 
     def classify_dialog_act(self, user_utterance):
         input_bow = vectorizer.transform([user_utterance])
@@ -71,8 +73,8 @@ class DialogManager:
         )
         if isinstance(recommendation, str):
             print(recommendation)
-            self.state = "welcome"
-            self.response = False
+            print("System: Do you want to modify any preference in order to keep searching?")
+            self.state = "no_match"
             return
 
         self.restaurant = recommendation
@@ -81,6 +83,7 @@ class DialogManager:
         self.state = "request_further_details"
 
     def handle_state(self, dialog_act, user_utterance):
+
         if self.state == "welcome":
             if dialog_act == "hello":
                 print("System: Welcome! Please, tell me the area where you want to find a restaurant.")
@@ -88,7 +91,11 @@ class DialogManager:
             elif dialog_act == "inform":
                 self.extract_preferences(user_utterance)
                 self.response = False
-                self.state = "ask_area" if not self.preferences["area"] else "ask_food_type"
+                non_none_preferences = [key for key, value in self.preferences.items() if value is not None]
+                if len(non_none_preferences) > 0:
+                    self.redirection(non_none_preferences[0])
+                else:
+                    self.state = "ask_area"
             elif dialog_act == "restart":
                 self.state = "start_over"
             elif dialog_act in ["bye", "negate"]:
@@ -99,8 +106,9 @@ class DialogManager:
 
         elif self.state == "start_over":
             print("System: We start over!")
+            self.response = False
             self.preferences = {key: None for key in self.preferences}
-            self.state = "welcome"
+            self.state = "ask_area"
 
         elif self.state == "ask_area":
             if dialog_act == "inform":
@@ -119,7 +127,7 @@ class DialogManager:
                 self.extract_preferences(user_utterance)
                 if self.preferences["food_type"]:
                     print(f"System: Great, you're looking for {self.preferences['food_type']} food. What's your price range?")
-                    self.state = "ask_price_range"
+                    self.redirection("food_type")
                 else:
                     print("System: Could you please tell me the type of food you prefer?")
             elif dialog_act in ["bye", "negate"]:
@@ -130,8 +138,8 @@ class DialogManager:
             if dialog_act == "inform":
                 self.extract_preferences(user_utterance)
                 if self.preferences["price_range"]:
-                    print(f"System: You're looking for a {self.preferences['price_range']} restaurant. I'll find the best options for you!")
-                    self.state = "make_recommendation"
+                    print(f"System: You're looking for a restaurant with {self.preferences['price_range']} price. I'll find the best options for you!")
+                    self.redirection("price_range")
                 else:
                     print("System: Could you please tell me your price range?")
             elif dialog_act in ["bye", "negate"]:
@@ -140,6 +148,31 @@ class DialogManager:
 
         elif self.state == "make_recommendation":
             self.make_recommendation()
+
+        elif self.state == "no_match":
+            if dialog_act == "negate":
+                print("System: Sorry, have a great day! Goodbye.")
+                self.state = "change_preferences"
+            else:
+                self.response = False
+                self.state = "changes"
+
+        elif self.state == "changes":
+            if dialog_act == "inform":
+                self.changes_counter -= 1
+            elif dialog_act == "negate":
+                print("System: Okay!")
+            else:
+                self.preferences[self.preferences_name[self.changes_counter]] = None
+            self.changes_counter += 1
+
+            if self.changes_counter == 3:
+                self.changes_counter = 0
+                self.response = False
+                self.state = "welcome"
+            else:
+                print(f"Do you want to change the {self.preferences_name[self.changes_counter]} of the restaurant? (Yes/No)")
+                self.state = "changes"
 
         elif self.state == "request_further_details":
             if dialog_act == "negate":

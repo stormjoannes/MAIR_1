@@ -10,7 +10,7 @@ class TextProcessor:
             'food_type': ['asian', 'korean', 'japanese', 'indian', 'thai', 'cuban', 'french',
                           'mexican', 'western', 'catalan', 'mediterranean', 'seafood', 'oriental',
                           'scottish', 'austrian', 'international', 'eritrean', 'spanish',
-                          'australian', 'turkish'],
+                          'australian', 'turkish','italian'],
             'price_range': ['moderate', 'moderately', 'expensive', 'cheap'],
             'location': ['north', 'south', 'east', 'west', 'center', 'any']
         }
