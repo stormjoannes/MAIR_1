@@ -7,12 +7,14 @@ from collections import defaultdict
 class TextProcessor:
     def __init__(self):
         self.basic_dict = {
-            'food_type': ['asian', 'korean', 'japanese', 'indian', 'thai', 'cuban', 'french',
-                          'mexican', 'western', 'catalan', 'mediterranean', 'seafood', 'oriental',
-                          'scottish', 'austrian', 'international', 'eritrean', 'spanish',
-                          'australian', 'turkish','italian'],
-            'price_range': ['moderate', 'moderately', 'expensive', 'cheap'],
-            'location': ['north', 'south', 'east', 'west', 'center', 'any']
+            'food_type': ['british', 'modern european', 'italian', 'romanian', 'seafood', 'chinese',
+                          'steakhouse', 'asian oriental', 'french', 'portuguese', 'indian', 'spanish',
+                          'european', 'vietnamese', 'korean', 'thai', 'moroccan', 'swiss', 'fusion',
+                          'gastropub', 'tuscan', 'international', 'traditional', 'mediterranean',
+                          'polynesian', 'african', 'turkish', 'bistro', 'north american', 'australasian',
+                          'persian', 'jamaican', 'lebanese', 'cuban', 'japanese', 'catalan'],
+            'price_range': ['moderate', 'expensive', 'cheap'],
+            'location': ['north', 'south', 'east', 'west', 'centre', 'any']
         }
 
         self.dynamic_dict = {

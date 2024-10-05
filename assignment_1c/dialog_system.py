@@ -216,7 +216,7 @@ class DialogManager:
                     if self.preferences["price_range"] == 'blank':
                         print("System: Understood, you don't have a specific price range in mind.")
                     else:
-                        print(f"System: You're looking for a {self.preferences['price_range']} restaurant.")
+                        print(f"System: You're looking for a(n) {self.preferences['price_range']} restaurant.")
                     self.state = "ask_specific_requirements"
                 else:
                     print("System: Could you please tell me your price range?")
