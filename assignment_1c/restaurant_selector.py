@@ -48,8 +48,6 @@ class RestaurantSelector:
     def recommend_restaurant(self, food_type=None, price_range=None, area=None, user_preferences=None):
         # Initial filtering based on directly available columns
         filtered_restaurants = self.filter_restaurants(food_type, price_range, area)
-        print("VALUES: ", food_type, price_range, area, user_preferences)
-        print(filtered_restaurants)
 
         # Apply inference rules to each restaurant based on user preferences
         filtered_restaurants = filtered_restaurants.apply(lambda x: self.apply_inference_rules(x, user_preferences),
@@ -65,12 +63,6 @@ class RestaurantSelector:
                     filtered_restaurants['children'] == user_preferences['children']]
 
         if filtered_restaurants.empty:
-            return "System: Sorry, no restaurant matches your preferences.", None
+            return "System: Sorry, no restaurant matches your preferences."
 
-        # Select a random restaurant for recommendation
-        recommendation = filtered_restaurants.sample(n=1).iloc[0]
-        remaining_restaurants = filtered_restaurants.drop(recommendation.name)
-
-        return recommendation, remaining_restaurants
-
-
+        return filtered_restaurants

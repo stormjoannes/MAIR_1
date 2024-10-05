@@ -3,7 +3,7 @@ from algorithm import TextProcessor
 from restaurant_selector import RestaurantSelector
 
 class DialogManager:
-    def __init__(self):
+    def __init__(self, amount_of_recommendations):
         self.state = "welcome"
         self.formality = "formal"
         self.preferences = {
@@ -15,7 +15,7 @@ class DialogManager:
         }
         self.response = True
         self.restaurant = None
-        self.other_options = None
+        self.amount_of_recommendations = amount_of_recommendations
         self.text_processor = TextProcessor()
         self.restaurant_selector = RestaurantSelector()
         self.changes_counter = 0
@@ -114,13 +114,8 @@ class DialogManager:
     def extract_preferences(self, user_utterance, input_category=None):
         categories = self.text_processor.categorize_words(user_utterance)
 
-        print("User utterance: ", user_utterance)
-        print("Categories: ", categories)
-
         for word in user_utterance.lower().split():
             if word == 'dontcare':
-                print("SUCCES")
-                print(self.preferences)
                 self.preferences[input_category] = 'blank'  # Set to None to ignore this preference
 
         for word, category in categories:
@@ -137,23 +132,46 @@ class DialogManager:
         properties = self.apply_rules()
 
         # Making recommendation based on preferences and inferred properties
-        recommendation, remaining_options = self.restaurant_selector.recommend_restaurant(
+        filtered_restaurants = self.restaurant_selector.recommend_restaurant(
             self.preferences['food_type'],
             self.preferences['price_range'],
             self.preferences['location'],
             properties  # Pass the inferred properties
         )
-        if isinstance(recommendation, str):
-            print(recommendation)
+        if isinstance(filtered_restaurants, str):
+            print(filtered_restaurants)
             print("System: Do you want to modify any preference in order to keep searching?")
             self.state = "no_match"
             return
 
-        self.restaurant = recommendation
-        self.other_options = remaining_options
-        print(
-            f"System: Recommending '{recommendation['restaurantname']}', a(n) {recommendation['pricerange']} {recommendation['food']} restaurant in the {recommendation['area']}.")
+        recommendations = {}
+        for i in range(self.amount_of_recommendations if len(filtered_restaurants) > self.amount_of_recommendations
+                       else len(filtered_restaurants)):
+            # Select a random restaurant for recommendation
+            recommendation = filtered_restaurants.sample(n=1).iloc[0]
+            recommendations[i + 1] = recommendation
+            filtered_restaurants.drop(recommendation.name, inplace=True)
+            print(f"System: Recommendation {i + 1}: '{recommendation['restaurantname']}', a(n) {recommendation['pricerange']} {recommendation['food']} restaurant in the {recommendation['area']}.")
+
+        self.recommendation_selector(recommendations)
+
         self.state = "request_further_details"
+
+    def recommendation_selector(self, recommendations):
+        if len(recommendations) > 1:
+            print(f"System: Which restaurant would you like more information about {tuple(recommendations.keys())}?")
+            self.state = "provide_details"
+
+            while True:
+                user_input = int(input("You: "))
+                if user_input in recommendations.keys():
+                    self.restaurant = recommendations[user_input]
+                    print(f"System: You selected '{self.restaurant['restaurantname']}'.")
+                    break
+                else:
+                    print("System: Please select a valid recommendation number.")
+        else:
+            self.restaurant = recommendations
 
     def handle_state(self, dialog_act, user_utterance):
         if self.state == "welcome":
