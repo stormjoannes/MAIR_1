@@ -111,8 +111,18 @@ class DialogManager:
             else:
                 self.state = "make_recommendation"
 
-    def extract_preferences(self, user_utterance):
+    def extract_preferences(self, user_utterance, input_category=None):
         categories = self.text_processor.categorize_words(user_utterance)
+
+        print("User utterance: ", user_utterance)
+        print("Categories: ", categories)
+
+        for word in user_utterance.lower().split():
+            if word == 'dontcare':
+                print("SUCCES")
+                print(self.preferences)
+                self.preferences[input_category] = 'blank'  # Set to None to ignore this preference
+
         for word, category in categories:
             if category in self.preferences and not self.preferences[category]:
                 self.preferences[category] = word
@@ -142,7 +152,7 @@ class DialogManager:
         self.restaurant = recommendation
         self.other_options = remaining_options
         print(
-            f"System: Recommending '{recommendation['restaurantname']}', an {self.preferences['price_range']} {self.preferences['food_type']} restaurant in {self.preferences['location']}.")
+            f"System: Recommending '{recommendation['restaurantname']}', a(n) {recommendation['pricerange']} {recommendation['food']} restaurant in the {recommendation['area']}.")
         self.state = "request_further_details"
 
     def handle_state(self, dialog_act, user_utterance):
@@ -171,9 +181,12 @@ class DialogManager:
 
         elif self.state == "ask_location":
             if dialog_act == "inform":
-                self.extract_preferences(user_utterance)
+                self.extract_preferences(user_utterance, 'location')
                 if self.preferences["location"]:
-                    print(f"System: Got it, you're looking for a restaurant in {self.preferences['location']}.")
+                    if self.preferences["location"] == 'blank':
+                        print("System: Understood, you don't have a specific location in mind for the restaurant.")
+                    else:
+                        print(f"System: Got it, you're looking for a restaurant in {self.preferences['location']}.")
                     self.redirection("location")
                 else:
                     print("System: Could you please tell me the location you want to find a restaurant?")
@@ -183,10 +196,12 @@ class DialogManager:
 
         elif self.state == "ask_food_type":
             if dialog_act == "inform":
-                self.extract_preferences(user_utterance)
+                self.extract_preferences(user_utterance, 'food_type')
                 if self.preferences["food_type"]:
-                    print(
-                        f"System: Great, you're looking for {self.preferences['food_type']} food.")
+                    if self.preferences["food_type"] == 'blank':
+                        print("System: Understood, you don't have a specific food type in mind.")
+                    else:
+                        print(f"System: Great, you're looking for {self.preferences['food_type']} food.")
                     self.redirection("food_type")
                 else:
                     print("System: Could you please tell me the type of food you prefer?")
@@ -196,9 +211,12 @@ class DialogManager:
 
         elif self.state == "ask_price_range":
             if dialog_act == "inform":
-                self.extract_preferences(user_utterance)
+                self.extract_preferences(user_utterance, 'price_range')
                 if self.preferences["price_range"]:
-                    print(f"System: You're looking for a {self.preferences['price_range']} restaurant.")
+                    if self.preferences["price_range"] == 'blank':
+                        print("System: Understood, you don't have a specific price range in mind.")
+                    else:
+                        print(f"System: You're looking for a {self.preferences['price_range']} restaurant.")
                     self.state = "ask_specific_requirements"
                 else:
                     print("System: Could you please tell me your price range?")
