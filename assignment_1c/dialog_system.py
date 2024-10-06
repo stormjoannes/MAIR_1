@@ -256,7 +256,7 @@ class DialogManager:
                         self.println(f"You're looking for a(n) {self.preferences['price_range']} restaurant.")
                     self.redirection("price_range")
                 else:
-                    self.println("Could you please tell me your price range?")
+                    self.println("Could you please tell me your price range (choose from cheap, moderate, expensive)?")
             elif dialog_act in ["bye", "negate"]:
                 self.state = "goodbye"
                 self.println(self.get_response())
