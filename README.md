@@ -30,4 +30,5 @@ The new features we implemented are the following:
 - A user can now restart the questions by saying 'restart' after the suggestion.
 - A user can now receive a small amount of recommendations instead of one.
 - A user is now able to change previous answers if there is no suggestions available.
+- The system now has a more human-like delay before showing response.
 - A user can now receive formal and informal reactions.
