@@ -34,32 +34,21 @@ class DialogManager:
         }
 
     def println(self, output):
+        """Prints the output with a typing effect for delay of response."""
         typing_text = 'typing...'
         print(typing_text, end='', flush=True)
         time.sleep(2)  # Wait for 2 seconds
         print('\r' + f"System: {output}", end='', flush=True)
         print()  # Move to the next line
 
-    def apply_rules(self):
-        properties = {}  # Track properties like 'romantic', 'touristic', etc.
-        for rule_id, rule in self.rules.items():
-            if all(self.preferences.get(ant[0]) == ant[1] for ant in rule['antecedents']):
-                consequent, value = rule['consequent']
-                if consequent in properties:
-                    # Handling contradictions
-                    if properties[consequent] != value:
-                        self.println(f"Contradiction detected for {consequent}. Resolving based on user input or additional logic.")
-                        # Resolution logic could go here
-                        continue
-                properties[consequent] = value
-        return properties
-
     def classify_dialog_act(self, user_utterance):
+        """Classify the dialog act of the user utterance using the Decision Tree classifier."""
         input_bow = vectorizer.transform([user_utterance])
         prediction = clf_tree.predict(input_bow)
         return prediction[0]
 
     def get_response(self):
+        """Returns the response based on the current state and formality level."""
         responses = {
             "welcome": {
                 "formal": "Welcome! How may I assist you today?",
@@ -73,12 +62,14 @@ class DialogManager:
         return responses[self.state][self.formality]
 
     def reset_dialog(self):
+        """Resets the dialog state and preferences to the initial state."""
         self.state = "welcome"
         self.preferences = {key: None for key in self.preferences}
         self.formality = "formal"
         self.println("The dialog has been reset. How may I assist you?")
 
     def ask_additional_requirements(self):
+        """Asks the user for additional requirements like romantic setting or a place suitable for children."""
         if self.preferences.get('romantic') is not None or self.preferences.get('children') is not None:
             self.println("Got it. Let's find the perfect spot for you!")
             self.state = "make_recommendation"
@@ -86,6 +77,7 @@ class DialogManager:
             self.println("Do you have any specific requirements like needing a romantic setting or a place suitable for children?")
 
     def extract_additional_preferences(self, user_input):
+        """Extracts the additional preferences like romantic setting or a place suitable for children."""
         preferences_map = {
             'romantic': 'romantic',
             'children': 'children',
@@ -101,6 +93,7 @@ class DialogManager:
         self.state = "make_recommendation"
 
     def redirection(self, category):
+        """Redirects the user to the next step based on the category of preference."""
         if self.state != "welcome":
             self.response = False
 
@@ -134,6 +127,7 @@ class DialogManager:
             self.response = True
 
     def extract_preferences(self, user_utterance, input_category=None):
+        """Extracts the preferences from the user utterance based on the category of preference."""
         categories = self.text_processor.categorize_words(user_utterance)
 
         for word in user_utterance.lower().split():
@@ -148,10 +142,8 @@ class DialogManager:
         return all(self.preferences[key] is not None for key in ['location', 'food_type', 'price_range'])
 
     def make_recommendation(self):
-        # # Applying rules to determine properties like 'romantic' and 'children'
-        # properties = self.apply_rules()
+        """Makes a recommendation based on the user preferences and inferred properties."""
 
-        # Making recommendation based on preferences and inferred properties
         filtered_restaurants = self.restaurant_selector.recommend_restaurant(
             self.preferences['food_type'],
             self.preferences['price_range'],
@@ -178,6 +170,7 @@ class DialogManager:
         self.state = "request_further_details"
 
     def recommendation_selector(self, recommendations):
+        """Selects a restaurant from the recommendations based on user input."""
         if len(recommendations) > 1:
             self.println(f"Which restaurant would you like more information about {tuple(recommendations.keys())}?")
 
@@ -193,6 +186,7 @@ class DialogManager:
             self.restaurant = recommendations
 
     def handle_state(self, dialog_act, user_utterance):
+        """Handles the dialog state based on the dialog act and user utterance."""
         if self.state == "welcome":
             if dialog_act == "hello":
                 self.println("Welcome! Please, tell me the location where you want to find a restaurant.")
@@ -325,10 +319,12 @@ class DialogManager:
                 self.state = "goodbye"
 
     def next_state(self, user_utterance):
+        """Determines the next state based on the dialog act and user utterance."""
         dialog_act = self.classify_dialog_act(user_utterance)
         self.handle_state(dialog_act, user_utterance)
 
     def run(self):
+        """Runs the dialog system."""
         # Pick random formality level, formal or informal
         self.formality = random.choice(["formal", "informal"])
 

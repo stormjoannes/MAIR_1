@@ -27,6 +27,9 @@ class TextProcessor:
         self.word_counter = Counter()
 
     def apply_levenshtein(self, word, category_words, threshold=1):
+        """
+        Apply the Levenshtein distance algorithm to find the closest word in a list of words
+        """
         closest_word = None
         min_distance = float('inf')
 
@@ -39,6 +42,9 @@ class TextProcessor:
         return closest_word
 
     def levenshtein_distance(self, str1, str2):
+        """
+        Calculate the Levenshtein distance between two strings
+        """
         memo = [[0] * (len(str2) + 1) for _ in range(len(str1) + 1)]
 
         # Initialize base cases (when one string is empty)
@@ -60,6 +66,9 @@ class TextProcessor:
         return memo[len(str1)][len(str2)]
 
     def categorize_words(self, sentence):
+        """
+        Categorize words in a sentence into predefined categories
+        """
         sentence_words = sentence.lower().split()
         categories = []
         categorized_words = set()

@@ -5,6 +5,7 @@ class RestaurantSelector:
         self.restaurants_df = pd.read_csv(csv_path)
 
     def filter_restaurants(self, food_type=None, price_range=None, area=None):
+        """Apply dataframe filters based on user preferences"""
         filtered_df = self.restaurants_df
 
         if food_type and food_type.lower() != 'blank':
@@ -19,6 +20,7 @@ class RestaurantSelector:
         return filtered_df
 
     def apply_inference_rules(self, restaurant, user_preferences):
+        """Apply inference rules to deduce properties of the restaurant based on user preferences"""
         # Dynamically determine which rules to apply based on user preferences
         properties = {}
         # Rule 1: Cheap and good food attracts tourists
@@ -46,6 +48,8 @@ class RestaurantSelector:
         return restaurant
 
     def recommend_restaurant(self, food_type=None, price_range=None, area=None, user_preferences=None):
+        """Recommend a restaurant out of the csv based on user preferences"""
+
         # Initial filtering based on directly available columns
         filtered_restaurants = self.filter_restaurants(food_type, price_range, area)
 
