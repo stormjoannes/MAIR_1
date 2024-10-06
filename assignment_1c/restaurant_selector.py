@@ -61,6 +61,12 @@ class RestaurantSelector:
             if user_preferences['children']:
                 filtered_restaurants = filtered_restaurants[
                     filtered_restaurants['children'] == user_preferences['children']]
+            if user_preferences['touristic']:
+                filtered_restaurants = filtered_restaurants[
+                    filtered_restaurants['touristic'] == user_preferences['touristic']]
+            if user_preferences['assigned_seats']:
+                filtered_restaurants = filtered_restaurants[
+                    filtered_restaurants['assigned_seats'] == user_preferences['assigned_seats']]
 
         if filtered_restaurants.empty:
             return "System: Sorry, no restaurant matches your preferences."

@@ -1,31 +1,9 @@
 """ This file contains the implementation of a Decision Tree to classify dialogue acts."""
 
-<<<<<<< Updated upstream
-=======
-
-data_path = "data/dialog_acts.dat"
-def cargar_dataset(file_path):
-    d_data = []
-    with open(file_path, 'r') as file:
-        for line in file:
-            # space split
-            parts = line.strip().split(' ', 1)
-            if len(parts) == 2:
-                dialog_act, utterance_content = parts
-                d_data.append((dialog_act, utterance_content))
-            else:
-                print(f"Incorrect line: {line}")
-    return d_data
-
-data = cargar_dataset(data_path)
-
-# imports
-from sklearn.feature_extraction.text import CountVectorizer
->>>>>>> Stashed changes
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score, classification_report
-from data_processing import load_data, remove_duplicates, preprocess_data
+from assignment_1a.data_processing import load_data, remove_duplicates, preprocess_data
 
 
 class DecisionTreeDialogClassifier:
@@ -57,18 +35,7 @@ class DecisionTreeDialogClassifier:
             print(f"{description} Accuracy: {accuracy * 100:.2f}%")
             print(classification_report(self.y_test, y_pred, zero_division=1))
 
-<<<<<<< Updated upstream
         return accuracy
-=======
-    def evaluate_classifier(self, clf, X_test, y_test):
-        y_pred = clf.predict(X_test)
-        accuracy = accuracy_score(y_test, y_pred)
-        # Set zero_division=1 to prevent the warning and treat undefined metrics as 1
-        report = classification_report(y_test, y_pred, zero_division=1)
-        #print(f"Accuracy: {accuracy * 100:.2f}%")
-        #print(report)
-        return report
->>>>>>> Stashed changes
 
     def run(self):
         """Run training and evaluation for both original and deduplicated data."""

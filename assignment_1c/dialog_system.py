@@ -13,7 +13,9 @@ class DialogManager:
             "food_type": None,
             "price_range": None,
             "romantic": None,
-            "children": None
+            "children": None,
+            'touristic': None,
+            'assigned_seats': None,
         }
         self.response = True
         self.restaurant = None
@@ -86,14 +88,18 @@ class DialogManager:
     def extract_additional_preferences(self, user_input):
         print("IN THE ADDITIONAL PREFERENCES FUNCTION")
         print("USER INPUT: ", user_input, "type: ", type(user_input))
-        if 'romantic' in user_input or 'children' in user_input:
-            print("SPECIFIC REQUIREMENTS DETECTED")
-            if 'romantic' in user_input:
-                print("ROMANCTIC PREFERENCE")
-                self.preferences['romantic'] = True if 'yes' in user_input or 'romantic' in user_input else False
-            if 'children' in user_input:
-                print("CHILDREN PREFERENCE")
-                self.preferences['children'] = True if 'yes' in user_input or 'children' in user_input else False
+        if 'romantic' in user_input:
+            print("ROMANCTIC PREFERENCE")
+            self.preferences['romantic'] = True if 'yes' in user_input or 'romantic' in user_input else False
+        elif 'children' in user_input:
+            print("CHILDREN PREFERENCE")
+            self.preferences['children'] = True if 'yes' in user_input or 'children' in user_input else False
+        elif 'touristic' in user_input:
+            print("TOURISTIC PREFERENCE")
+            self.preferences['touristic'] = True if 'yes' in user_input or 'touristic' in user_input else False
+        elif 'assigned' in user_input:
+            print("ASSIGNED PREFERENCE")
+            self.preferences['assigned_seats'] = True if 'yes' in user_input or 'assigned' in user_input else False
         else:
             print("CAN'T GET INTO ADDITIONAL PREFERENCE LOOP")
 
@@ -268,7 +274,7 @@ class DialogManager:
                 self.response = False
                 self.state = "make_recommendation"
             elif dialog_act == "affirm":
-                self.println("Please specify if you need a romantic setting or a place suitable for children.")
+                self.println("Please specify if you need a romantic setting, touristic restaurant, assigned seats or a place suitable for children.")
             else:
                 self.extract_additional_preferences(user_utterance)
                 self.response = False
