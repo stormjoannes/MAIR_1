@@ -5,12 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="331e5292-6bfe-4ccb-9010-e65bf0c42c31" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/assignment_1b/algorithm.py" beforeDir="false" afterPath="$PROJECT_DIR$/assignment_1b/algorithm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignment_1b/dialog_system.py" beforeDir="false" afterPath="$PROJECT_DIR$/assignment_1b/dialog_system.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignment_1b/restaurant_selector.py" beforeDir="false" afterPath="$PROJECT_DIR$/assignment_1b/restaurant_selector.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignment_1c/algorithm.py" beforeDir="false" afterPath="$PROJECT_DIR$/assignment_1c/algorithm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/MAIR_1.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assignment_1a/DecisionTreeClassifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/assignment_1a/DecisionTreeClassifier.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/assignment_1c/dialog_system.py" beforeDir="false" afterPath="$PROJECT_DIR$/assignment_1c/dialog_system.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignment_1c/restaurant_selector.py" beforeDir="false" afterPath="$PROJECT_DIR$/assignment_1c/restaurant_selector.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,29 +33,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.aux.executor&quot;: &quot;Run&quot;,
-    &quot;Python.main (1).executor&quot;: &quot;Run&quot;,
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/aranm/OneDrive/Documents/AI MASTER/YEAR 1/Period 1/MAIR/MAIR_1/assignment_1c&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Git&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.aux.executor": "Run",
+    "Python.main (1).executor": "Run",
+    "Python.main c.executor": "Run",
+    "Python.main.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/aranm/OneDrive/Documents/AI MASTER/YEAR 1/Period 1/MAIR/MAIR_1",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "vcs.Git",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\aranm\OneDrive\Documents\AI MASTER\YEAR 1\Period 1\MAIR\MAIR_1\assignment_1c" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.main (1)">
     <configuration name="main (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="MAIR_1" />
       <option name="ENV_FILES" value="" />
@@ -69,6 +68,30 @@
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/assignment_1c" />
       <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/assignment_1c/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main c" type="PythonConfigurationType" factoryName="Python">
+      <module name="MAIR_1" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.11" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
@@ -104,10 +127,15 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Python.main c" />
+      <item itemvalue="Python.main" />
+      <item itemvalue="Python.main (1)" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.main" />
         <item itemvalue="Python.main (1)" />
+        <item itemvalue="Python.main" />
       </list>
     </recent_temporary>
   </component>
@@ -132,15 +160,29 @@
       <workItem from="1727713142404" duration="14106000" />
       <workItem from="1727731230954" duration="4832000" />
       <workItem from="1727817573651" duration="1065000" />
+      <workItem from="1728229296299" duration="42000" />
+      <workItem from="1728230458577" duration="7100000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/assignment_1c/dialog_system.py</url>
+          <line>144</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/MAIR_1$aux.coverage" NAME="aux Coverage Results" MODIFIED="1727338674939" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assignment_1b" />
-    <SUITE FILE_PATH="coverage/MAIR_1$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1727735215748" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assignment_1c" />
-    <SUITE FILE_PATH="coverage/MAIR_1$main.coverage" NAME="main Coverage Results" MODIFIED="1727735228962" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assignment_1b" />
+    <SUITE FILE_PATH="coverage/MAIR_1$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1728237178589" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assignment_1c" />
+    <SUITE FILE_PATH="coverage/MAIR_1$main.coverage" NAME="main Coverage Results" MODIFIED="1728229966400" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assignment_1b" />
+    <SUITE FILE_PATH="coverage/MAIR_1$main_c.coverage" NAME="main c Coverage Results" MODIFIED="1728230488118" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>

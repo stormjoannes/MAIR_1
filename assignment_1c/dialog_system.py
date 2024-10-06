@@ -94,36 +94,45 @@ class DialogManager:
             if 'children' in user_input:
                 print("CHILDREN PREFERENCE")
                 self.preferences['children'] = True if 'yes' in user_input or 'children' in user_input else False
-            self.state = "make_recommendation"
         else:
             print("CAN'T GET INTO ADDITIONAL PREFERENCE LOOP")
-            self.state = "ask_specific_requirements"  # Ensure correct state transition
+
+        self.response = False
+        self.state = "make_recommendation"
 
     def redirection(self, category):
         if self.state != "welcome":
             self.response = False
 
-        if category == "food_type":
-            if self.preferences["location"] is None:
-                self.state = "ask_location"
-            elif self.preferences["price_range"] is None:
-                self.state = "ask_price_range"
-            else:
-                self.state = "make_recommendation"
-        elif category == "location":
-            if self.preferences["food_type"] is None:
-                self.state = "ask_food_type"
-            elif self.preferences["price_range"] is None:
-                self.state = "ask_price_range"
-            else:
-                self.state = "make_recommendation"
-        else:  # price_range
-            if self.preferences["location"] is None:
-                self.state = "ask_location"
-            elif self.preferences["food_type"] is None:
-                self.state = "ask_food_type"
-            else:
-                self.state = "make_recommendation"
+        match category:
+            case "food_type":
+                if self.preferences["location"] is None:
+                    self.state = "ask_location"
+                elif self.preferences["price_range"] is None:
+                    self.state = "ask_price_range"
+                else:
+                    self.state = "ask_specific_requirements"
+            case "location":
+                if self.preferences["food_type"] is None:
+                    self.state = "ask_food_type"
+                elif self.preferences["price_range"] is None:
+                    self.state = "ask_price_range"
+                else:
+                    self.state = "ask_specific_requirements"
+            case "price_range":
+                if self.preferences["location"] is None:
+                    self.state = "ask_location"
+                elif self.preferences["food_type"] is None:
+                    self.state = "ask_food_type"
+                else:
+                    self.state = "ask_specific_requirements"
+            case _:
+                self.state = "ask_specific_requirements"
+
+        if self.preferences_ready():
+            self.ask_additional_requirements()
+            self.response = True
+
 
     def extract_preferences(self, user_utterance, input_category=None):
         categories = self.text_processor.categorize_words(user_utterance)
@@ -135,8 +144,6 @@ class DialogManager:
         for word, category in categories:
             if category in self.preferences and not self.preferences[category]:
                 self.preferences[category] = word
-        if self.preferences_ready():
-            self.ask_additional_requirements()
 
     def preferences_ready(self):
         return all(self.preferences[key] is not None for key in ['location', 'food_type', 'price_range'])
@@ -174,13 +181,13 @@ class DialogManager:
     def recommendation_selector(self, recommendations):
         if len(recommendations) > 1:
             self.println(f"Which restaurant would you like more information about {tuple(recommendations.keys())}?")
-            self.state = "provide_details"
+            #self.state = "provide_details"
 
             while True:
                 user_input = int(input("You: "))
                 if user_input in recommendations.keys():
                     self.restaurant = recommendations[user_input]
-                    self.println(f"You selected '{self.restaurant['restaurantname']}'.")
+                    self.println(f"You selected '{self.restaurant['restaurantname']}'. Do you want the phone number?")
                     break
                 else:
                     self.println("Please select a valid recommendation number.")
@@ -249,7 +256,7 @@ class DialogManager:
                         self.println("Understood, you don't have a specific price range in mind.")
                     else:
                         self.println(f"You're looking for a(n) {self.preferences['price_range']} restaurant.")
-                    self.state = "ask_specific_requirements"
+                    self.redirection("price_range")
                 else:
                     self.println("Could you please tell me your price range?")
             elif dialog_act in ["bye", "negate"]:
@@ -257,11 +264,15 @@ class DialogManager:
                 self.println(self.get_response())
 
         elif self.state == "ask_specific_requirements":
-            self.extract_additional_preferences(user_utterance)
-            if self.preferences_ready():
+            if dialog_act == "negate":
+                self.response = False
                 self.state = "make_recommendation"
-            else:
+            elif dialog_act == "affirm":
                 self.println("Please specify if you need a romantic setting or a place suitable for children.")
+            else:
+                self.extract_additional_preferences(user_utterance)
+                self.response = False
+                self.state = "make_recommendation"
 
         elif self.state == "make_recommendation":
             self.make_recommendation()
