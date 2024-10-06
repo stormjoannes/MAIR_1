@@ -1,6 +1,7 @@
 from assignment_1a.DTC import vectorizer, clf_tree
 from algorithm import TextProcessor
 from restaurant_selector import RestaurantSelector
+import random
 
 class DialogManager:
     def __init__(self, amount_of_recommendations):
@@ -48,7 +49,7 @@ class DialogManager:
         prediction = clf_tree.predict(input_bow)
         return prediction[0]
 
-    def get_response(self, message_key):
+    def get_response(self):
         responses = {
             "welcome": {
                 "formal": "Welcome! How may I assist you today?",
@@ -59,7 +60,7 @@ class DialogManager:
                 "informal": "Alright, take care!"
             }
         }
-        return responses[message_key][self.formality]
+        return responses[self.state][self.formality]
 
     def reset_dialog(self):
         self.state = "welcome"
@@ -190,7 +191,7 @@ class DialogManager:
                 self.reset_dialog()
             elif dialog_act in ["bye", "negate"]:
                 self.state = "goodbye"
-                print("System: Goodbye!")
+                print(self.get_response())
             else:
                 print("System: Sorry, I didn't understand. Could you tell me your preferences again?")
 
@@ -210,7 +211,7 @@ class DialogManager:
                     print("System: Could you please tell me the location you want to find a restaurant?")
             elif dialog_act in ["bye", "negate"]:
                 self.state = "goodbye"
-                print("System: Goodbye!")
+                print(self.get_response())
 
         elif self.state == "ask_food_type":
             if dialog_act == "inform":
@@ -225,7 +226,7 @@ class DialogManager:
                     print("System: Could you please tell me the type of food you prefer?")
             elif dialog_act in ["bye", "negate"]:
                 self.state = "goodbye"
-                print("System: Goodbye!")
+                print(self.get_response())
 
         elif self.state == "ask_price_range":
             if dialog_act == "inform":
@@ -240,7 +241,7 @@ class DialogManager:
                     print("System: Could you please tell me your price range?")
             elif dialog_act in ["bye", "negate"]:
                 self.state = "goodbye"
-                print("System: Goodbye!")
+                print(self.get_response())
 
         elif self.state == "ask_specific_requirements":
             self.extract_additional_preferences(user_utterance)
@@ -306,7 +307,12 @@ class DialogManager:
         self.handle_state(dialog_act, user_utterance)
 
     def run(self):
-        print("System: Hello! How can I help you today?")
+        # Pick random formality level, formal or informal
+        self.formality = random.choice(["formal", "informal"])
+
+        # Welcome the user
+        print(self.get_response())
+
         while self.state != "goodbye":
             if self.response:
                 user_input = input("You: ").lower()
