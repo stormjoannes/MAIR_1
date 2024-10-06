@@ -26,28 +26,42 @@ class TextProcessor:
         self.stopwords = set(['a', 'an', 'the', 'in', 'that', 'priced', 'would'])
         self.word_counter = Counter()
 
-    def levenshtein_recursive(self, str1, str2, m, n):
+    def apply_levenshtein(self, word, category_words, threshold=1):
+        closest_word = None
+        min_distance = float('inf')
+
+        # Create a memoization dictionary for the levenshtein distance function
+        memo = {}
+
+        for new_word in category_words:
+            distance = self.levenshtein_memoized(word, new_word, len(word), len(new_word), memo)
+            if distance < min_distance and distance <= threshold or word == new_word:
+                closest_word = new_word
+                min_distance = distance
+        return closest_word
+
+    def levenshtein_memoized(self, str1, str2, m, n, memo):
+        # Memoization check
+        if (m, n) in memo:
+            return memo[(m, n)]
+
         if m == 0:
             return n
         if n == 0:
             return m
-        if str1[m - 1] == str2[n - 1]:
-            return self.levenshtein_recursive(str1, str2, m - 1, n - 1)
-        return 1 + min(
-            self.levenshtein_recursive(str1, str2, m, n - 1),  # Insert
-            self.levenshtein_recursive(str1, str2, m - 1, n),  # Remove
-            self.levenshtein_recursive(str1, str2, m - 1, n - 1)  # Replace
-        )
 
-    def apply_levenshtein(self, word, category_words, threshold=1):
-        closest_word = None
-        min_distance = float('inf')
-        for new_word in category_words:
-            distance = self.levenshtein_recursive(word, new_word, len(word), len(new_word))
-            if distance < min_distance and distance <= threshold:
-                closest_word = new_word
-                min_distance = distance
-        return closest_word
+        if str1[m - 1] == str2[n - 1]:
+            result = self.levenshtein_memoized(str1, str2, m - 1, n - 1, memo)
+        else:
+            result = 1 + min(
+                self.levenshtein_memoized(str1, str2, m, n - 1, memo),  # Insert
+                self.levenshtein_memoized(str1, str2, m - 1, n, memo),  # Remove
+                self.levenshtein_memoized(str1, str2, m - 1, n - 1, memo)  # Replace
+            )
+
+        # Store result in memo before returning
+        memo[(m, n)] = result
+        return result
 
     def categorize_words(self, sentence):
         sentence_words = sentence.lower().split()
