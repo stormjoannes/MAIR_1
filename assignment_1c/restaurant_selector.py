@@ -1,7 +1,7 @@
 import pandas as pd
 
 class RestaurantSelector:
-    def __init__(self, csv_path='data/restaurant_info.csv'):
+    def __init__(self, csv_path='../data/restaurant_info.csv'):
         self.restaurants_df = pd.read_csv(csv_path)
 
     def filter_restaurants(self, food_type=None, price_range=None, area=None):

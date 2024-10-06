@@ -45,14 +45,14 @@ class SupportVectorMachineClassifier:
         # Train and evaluate on original data
         print("Evaluating on original data:")
         self.train(self.data)
-        self.evaluate("Original Data", "data/original_data_results.txt")
+        self.evaluate("Original Data", "../data/original_data_results.txt")
 
         # Train and evaluate on deduplicated data
         print("\nEvaluating on deduplicated data:")
         self.train(self.deduplicated_data)
-        self.evaluate("Deduplicated Data", "data/deduplicated_data_results.txt")
+        self.evaluate("Deduplicated Data", "../data/deduplicated_data_results.txt")
 
 
 # Usage Example
-svm_classifier = SupportVectorMachineClassifier('data/dialog_acts.dat')
+svm_classifier = SupportVectorMachineClassifier('../data/dialog_acts.dat')
 svm_classifier.run()

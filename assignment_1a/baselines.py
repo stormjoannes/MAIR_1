@@ -53,7 +53,7 @@ class BaselineClassifier:
 
 
 # Usage Example
-baseline_classifier = BaselineClassifier("data/dialog_acts.dat", "data/keywords.json")
+baseline_classifier = BaselineClassifier("../data/dialog_acts.dat", "../data/keywords.json")
 baseline_classifier.apply_baseline()
 baseline_classifier.apply_keyword_model()
 baseline_classifier.manual_test()

@@ -49,7 +49,7 @@ class DecisionTreeDialogClassifier:
 
 
 # Usage Example
-decision_tree_classifier = DecisionTreeDialogClassifier('data/dialog_acts.dat')
+decision_tree_classifier = DecisionTreeDialogClassifier('../data/dialog_acts.dat')
 
 # Print outputs if running as a script
 if __name__ == "__main__":

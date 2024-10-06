@@ -76,5 +76,5 @@ class FeedforwardNeuralNetworkClassifier:
 
 
 # Usage Example
-fnn_classifier = FeedforwardNeuralNetworkClassifier('data/dialog_acts.dat')
+fnn_classifier = FeedforwardNeuralNetworkClassifier('../data/dialog_acts.dat')
 fnn_classifier.run()
