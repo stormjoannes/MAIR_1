@@ -4,95 +4,57 @@ import json
 from utils import manual_test_model, retrieve_data
 
 
-def count_labels(data):
-    """Count the occurrences of each label in the dataset."""
-    label_counts = {}
+class BaselineClassifier:
+    def __init__(self, filepath, keywords_file):
+        self.data = retrieve_data(filepath)
+        self.keywords = self.load_keywords(keywords_file)
 
-    for label in data['label']:
-        if label in label_counts:
-            label_counts[label] += 1
-        else:
-            label_counts[label] = 1
+    def load_keywords(self, filepath):
+        with open(filepath, 'r') as file:
+            return json.load(file)
 
-    for label, count in label_counts.items():
-        print(f"{label}: {count}")
+    def count_labels(self):
+        label_counts = {}
+        for label in self.data['label']:
+            label_counts[label] = label_counts.get(label, 0) + 1
+        for label, count in label_counts.items():
+            print(f"{label}: {count}")
 
+    def classify_sentence(self, sentence, keywords=None):
+        if keywords is None:
+            keywords = self.keywords  # Fallback to default if not provided
+        sentence_lower = sentence.lower()
+        sorted_keywords = sorted(((label, keyword) for label, kw_list in keywords.items() for keyword in kw_list),
+                                 key=lambda x: len(x[1]), reverse=True)
+        for label, keyword in sorted_keywords:
+            if keyword in sentence_lower:
+                return label
+        return 'null'
 
-def classify_sentence(sentence, keywords):
-    """Classify a sentence based on the keywords provided."""
-    sentence_lower = sentence.lower()
+    def apply_baseline(self, default_label="inform"):
+        self.data['prediction'] = [default_label] * len(self.data['sentence'])
+        accuracy = self.calculate_accuracy(self.data['label'], self.data['prediction'])
+        print(f"Inform baseline accuracy: {accuracy:.2f}%")
+        self.count_labels()
 
-    sorted_keywords = sorted(((label, keyword) for label, kw_list in keywords.items() for keyword in kw_list),
-                             key=lambda x: len(x[1]), reverse=True)
+    def apply_keyword_model(self):
+        self.data['prediction'] = [self.classify_sentence(sentence) for sentence in self.data['sentence']]
+        accuracy = self.calculate_accuracy(self.data['label'], self.data['prediction'])
+        print(f"Keyword model accuracy: {accuracy:.2f}%")
 
-    for label, keyword in sorted_keywords:
-        if keyword in sentence_lower:
-            return label
+    @staticmethod
+    def calculate_accuracy(labels, predictions):
+        correct = sum(1 for l, p in zip(labels, predictions) if l == p)
+        total = len(labels)
+        return (correct / total) * 100 if total > 0 else 0
 
-    # Classify 'null' if no keywords are found
-    return 'null'
-
-
-def calculate_total_accuracy(labels, predictions):
-    """Calculate the accuracy of the model using the labels and predictions."""
-
-    correct = sum(1 for l, p in zip(labels, predictions) if l == p)
-    total = len(labels)
-    accuracy = (correct / total) * 100 if total > 0 else 0
-    return accuracy
-
-
-def calculate_accuracy_per_label(labels, predictions):
-    """Calculate the accuracy per label using the labels and predictions."""
-    label_counts = {}
-    correct_counts = {}
-
-    for label, prediction in zip(labels, predictions):
-        if label not in label_counts:
-            label_counts[label] = 0
-        if label not in correct_counts:
-            correct_counts[label] = 0
-
-        label_counts[label] += 1
-        if label == prediction:
-            correct_counts[label] += 1
-
-    accuracy_per_label = {}
-    for label in label_counts:
-        total = label_counts[label]
-        correct = correct_counts[label]
-        accuracy_per_label[label] = (correct / total) * 100 if total > 0 else 0
-
-    return accuracy_per_label
+    def manual_test(self):
+        manual_test_model(self.classify_sentence, self.keywords)
 
 
-data = retrieve_data("data/dialog_acts.dat")
+# Usage Example
+baseline_classifier = BaselineClassifier("data/dialog_acts.dat", "data/keywords.json")
+baseline_classifier.apply_baseline()
+baseline_classifier.apply_keyword_model()
+baseline_classifier.manual_test()
 
-for sentence in data["sentence"]:
-    data["prediction"].append("inform")
-
-
-correct = 0
-total = len(data['label'])
-
-for i in range(total):
-    if data['label'][i] == data['prediction'][i]:
-        correct += 1
-
-accuracy = correct / total * 100
-print(f"Inform baseline accuracy: {accuracy:.2f}%\n")
-
-count_labels(data)
-
-with open('data/keywords.json', 'r') as file:
-    keywords = json.load(file)
-
-data['prediction'] = [classify_sentence(sentence, keywords) for sentence in data['sentence']]
-accuracy = calculate_total_accuracy(data['label'], data['prediction'])
-print("\nKeywords model baseline accuracy: ", accuracy, "\n")
-
-accuracy_per_label = calculate_accuracy_per_label(data['label'], data['prediction'])
-for label, accuracy in accuracy_per_label.items():
-    print(f"{label}, Accuracy: {accuracy:.2f}%")
-
-manual_test_model(classify_sentence)

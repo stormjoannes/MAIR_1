@@ -1,6 +1,6 @@
 # dialog_system.py
 
-from assignment_1a.DTC import vectorizer, clf_tree
+from assignment_1a.DecisionTreeClassifier import vectorizer, clf_tree
 from algorithm import TextProcessor
 from restaurant_selector import RestaurantSelector
 

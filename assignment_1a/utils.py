@@ -1,7 +1,7 @@
 """This file contains utility functions for the dialogue act classification task."""
 
 
-def manual_test_model(classify_function):
+def manual_test_model(classify_function, keywords):
     while True:
         sentence = input("Enter a sentence to classify (type 'exit' to stop): ")
 
@@ -9,7 +9,7 @@ def manual_test_model(classify_function):
             print("Exiting the classifier.")
             break
 
-        label = classify_function(sentence)
+        label = classify_function(sentence, keywords)
         print(f"Classified as: {label}")
 
 
