@@ -86,22 +86,16 @@ class DialogManager:
             self.println("Do you have any specific requirements like needing a romantic setting or a place suitable for children?")
 
     def extract_additional_preferences(self, user_input):
-        print("IN THE ADDITIONAL PREFERENCES FUNCTION")
-        print("USER INPUT: ", user_input, "type: ", type(user_input))
-        if 'romantic' in user_input:
-            print("ROMANCTIC PREFERENCE")
-            self.preferences['romantic'] = True if 'yes' in user_input or 'romantic' in user_input else False
-        elif 'children' in user_input:
-            print("CHILDREN PREFERENCE")
-            self.preferences['children'] = True if 'yes' in user_input or 'children' in user_input else False
-        elif 'touristic' in user_input:
-            print("TOURISTIC PREFERENCE")
-            self.preferences['touristic'] = True if 'yes' in user_input or 'touristic' in user_input else False
-        elif 'assigned' in user_input:
-            print("ASSIGNED PREFERENCE")
-            self.preferences['assigned_seats'] = True if 'yes' in user_input or 'assigned' in user_input else False
-        else:
-            print("CAN'T GET INTO ADDITIONAL PREFERENCE LOOP")
+        preferences_map = {
+            'romantic': 'romantic',
+            'children': 'children',
+            'touristic': 'touristic',
+            'assigned': 'assigned_seats'
+        }
+
+        for key, preference in preferences_map.items():
+            if key in user_input:
+                self.preferences[preference] = 'yes' in user_input or key in user_input
 
         self.response = False
         self.state = "make_recommendation"
@@ -138,7 +132,6 @@ class DialogManager:
         if self.preferences_ready():
             self.ask_additional_requirements()
             self.response = True
-
 
     def extract_preferences(self, user_utterance, input_category=None):
         categories = self.text_processor.categorize_words(user_utterance)
@@ -187,7 +180,6 @@ class DialogManager:
     def recommendation_selector(self, recommendations):
         if len(recommendations) > 1:
             self.println(f"Which restaurant would you like more information about {tuple(recommendations.keys())}?")
-            #self.state = "provide_details"
 
             while True:
                 user_input = int(input("You: "))
