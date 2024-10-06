@@ -10,37 +10,49 @@ class SupportVectorMachineClassifier:
     def __init__(self, filepath):
         self.data = load_data(filepath)
         self.deduplicated_data = remove_duplicates(self.data)
+        self.vectorizer = None
+        self.classifier = None
+        self.X_train = None
+        self.X_test = None
+        self.y_train = None
+        self.y_test = None
 
-    def train_and_evaluate(self, data, description, output_file):
-        X, labels, vectorizer = preprocess_data(data, method="tfidf")
-        X_train, X_test, y_train, y_test = train_test_split(X, labels, test_size=0.15, random_state=42)
+    def train(self, data):
+        """Train the SVM model."""
+        X, labels, self.vectorizer = preprocess_data(data, method="tfidf")
+        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(X, labels, test_size=0.15, random_state=42)
 
-        classifier = SVC(C=1.0, kernel='linear')
-        classifier.fit(X_train, y_train)
+        self.classifier = SVC(C=1.0, kernel='linear')
+        self.classifier.fit(self.X_train, self.y_train)
 
-        y_pred = classifier.predict(X_test)
-        accuracy = accuracy_score(y_test, y_pred)
+    def evaluate(self, description, output_file):
+        """Evaluate the SVM model."""
+        y_pred = self.classifier.predict(self.X_test)
+        accuracy = accuracy_score(self.y_test, y_pred)
         print(f"{description} Accuracy: {accuracy * 100:.2f}%")
 
-        report = classification_report(y_test, y_pred, zero_division=1)
-        cm = confusion_matrix(y_test, y_pred)
+        report = classification_report(self.y_test, y_pred, zero_division=1)
+        cm = confusion_matrix(self.y_test, y_pred)
 
         with open(output_file, 'w', encoding='utf-8') as f:
-            for original_label, predicted_label in zip(y_test, y_pred):
+            for original_label, predicted_label in zip(self.y_test, y_pred):
                 f.write(f"{original_label}\t{predicted_label}\n")
 
         return accuracy
 
     def run(self):
-        print("Original Data Accuracy:")
-        self.train_and_evaluate(self.data, "Original Data", "data/original_data_results.txt")
+        """Run training and evaluation for both original and deduplicated data."""
+        # Train and evaluate on original data
+        print("Evaluating on original data:")
+        self.train(self.data)
+        self.evaluate("Original Data", "data/original_data_results.txt")
 
-        print("\nDeduplicated Data Accuracy:")
-        self.train_and_evaluate(self.deduplicated_data, "Deduplicated Data", "data/deduplicated_data_results.txt")
+        # Train and evaluate on deduplicated data
+        print("\nEvaluating on deduplicated data:")
+        self.train(self.deduplicated_data)
+        self.evaluate("Deduplicated Data", "data/deduplicated_data_results.txt")
 
 
 # Usage Example
 svm_classifier = SupportVectorMachineClassifier('data/dialog_acts.dat')
 svm_classifier.run()
-
-

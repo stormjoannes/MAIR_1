@@ -16,6 +16,11 @@ class FeedforwardNeuralNetworkClassifier:
         self.max_len = max_len
         self.tokenizer = self.create_tokenizer(self.data)
         self.label_encoder = LabelEncoder()
+        self.model = None
+        self.X_train = None
+        self.X_test = None
+        self.y_train = None
+        self.y_test = None
 
     def create_tokenizer(self, data):
         tokenizer = tf.keras.preprocessing.text.Tokenizer(num_words=self.max_words, oov_token='<OOV>')
@@ -41,28 +46,35 @@ class FeedforwardNeuralNetworkClassifier:
             layers.Dense(15, activation='softmax')
         ])
         model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
-        return model
+        self.model = model
 
-    def train_and_evaluate(self, data, description):
+    def train(self, data):
+        """Train the model."""
         X = self.tokenize_data(data)
         y = self.encode_labels(data)
+        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+        self.create_model()
+        self.model.fit(self.X_train, self.y_train, epochs=5, batch_size=16, validation_split=0.2)
 
-        model = self.create_model()
-        model.fit(X_train, y_train, epochs=5, batch_size=16, validation_split=0.2)
-
-        test_loss, test_acc = model.evaluate(X_test, y_test)
+    def evaluate(self, description):
+        """Evaluate the model."""
+        test_loss, test_acc = self.model.evaluate(self.X_test, self.y_test)
         print(f"{description} Test Accuracy: {test_acc * 100:.2f}%")
 
-    def evaluate(self):
+    def run(self):
+        """Run training and evaluation for both original and deduplicated data."""
+        # Train and evaluate on original data
         print("Evaluating on original data:")
-        self.train_and_evaluate(self.data, "Original Data")
+        self.train(self.data)
+        self.evaluate("Original Data")
 
+        # Train and evaluate on deduplicated data
         print("\nEvaluating on deduplicated data:")
-        self.train_and_evaluate(self.deduplicated_data, "Deduplicated Data")
+        self.train(self.deduplicated_data)
+        self.evaluate("Deduplicated Data")
 
 
 # Usage Example
 fnn_classifier = FeedforwardNeuralNetworkClassifier('data/dialog_acts.dat')
-fnn_classifier.evaluate()
+fnn_classifier.run()

@@ -3,7 +3,7 @@
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score, classification_report
-from assignment_1a.data_processing import load_data, remove_duplicates, preprocess_data
+from data_processing import load_data, remove_duplicates, preprocess_data
 
 
 class DecisionTreeDialogClassifier:
@@ -14,34 +14,44 @@ class DecisionTreeDialogClassifier:
         self.vectorizer = None
         self.clf_tree = None
         self.print_output = False
+        self.X_train = None
+        self.X_test = None
+        self.y_train = None
+        self.y_test = None
 
-    def train_and_evaluate(self, labeled_lines, description):
+    def train(self, labeled_lines):
+        """Train the Decision Tree model."""
         X, labels, self.vectorizer = preprocess_data(labeled_lines, method="count")
-        X_train, X_test, y_train, y_test = train_test_split(X, labels, test_size=0.15, random_state=42)
+        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(X, labels, test_size=0.15, random_state=42)
 
         self.clf_tree = DecisionTreeClassifier(random_state=42, max_depth=20, min_samples_split=5, criterion='entropy')
-        self.clf_tree.fit(X_train, y_train)
+        self.clf_tree.fit(self.X_train, self.y_train)
 
-        y_pred = self.clf_tree.predict(X_test)
-        accuracy = accuracy_score(y_test, y_pred)
+    def evaluate(self, description):
+        """Evaluate the Decision Tree model."""
+        y_pred = self.clf_tree.predict(self.X_test)
+        accuracy = accuracy_score(self.y_test, y_pred)
         if self.print_output:
             print(f"{description} Accuracy: {accuracy * 100:.2f}%")
-            print(classification_report(y_test, y_pred, zero_division=1))
+            print(classification_report(self.y_test, y_pred, zero_division=1))
 
         return accuracy
 
     def run(self):
-        # Calculate accuracy for original data
-        self.train_and_evaluate(self.labeled_data, "Original Data")
+        """Run training and evaluation for both original and deduplicated data."""
+        # Train and evaluate on original data
+        self.train(self.labeled_data)
+        self.evaluate("Original Data")
 
-        # Calculate accuracy for deduplicated data
-        self.train_and_evaluate(self.deduplicated_data, "Deduplicated Data")
+        # Train and evaluate on deduplicated data
+        self.train(self.deduplicated_data)
+        self.evaluate("Deduplicated Data")
 
 
 # Usage Example
 decision_tree_classifier = DecisionTreeDialogClassifier('data/dialog_acts.dat')
 
-# print outputs if running as a script
+# Print outputs if running as a script
 if __name__ == "__main__":
     decision_tree_classifier.print_output = True
 else:
