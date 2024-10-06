@@ -5,9 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="331e5292-6bfe-4ccb-9010-e65bf0c42c31" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/MAIR_1.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignment_1a/DecisionTreeClassifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/assignment_1a/DecisionTreeClassifier.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/assignment_1c/dialog_system.py" beforeDir="false" afterPath="$PROJECT_DIR$/assignment_1c/dialog_system.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -35,10 +34,14 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Python.DecisionTreeClassifier.executor": "Run",
+    "Python.SupportVectorMachine.executor": "Run",
+    "Python.add_manual_restaurant_charasteristic.executor": "Run",
     "Python.aux.executor": "Run",
     "Python.main (1).executor": "Run",
     "Python.main c.executor": "Run",
     "Python.main.executor": "Run",
+    "Python.restaurant_selector.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
     "last_opened_file_path": "C:/Users/aranm/OneDrive/Documents/AI MASTER/YEAR 1/Period 1/MAIR/MAIR_1",
@@ -55,9 +58,60 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\aranm\OneDrive\Documents\AI MASTER\YEAR 1\Period 1\MAIR\MAIR_1\assignment_1c" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\storm\OneDrive\Documenten\Universiteit Utrecht\MAIR_1\data" />
+      <recent name="C:\Users\storm\OneDrive\Documenten\Universiteit Utrecht\MAIR_1" />
+      <recent name="C:\Users\storm\OneDrive\Documenten\Universiteit Utrecht\MAIR_1\assignment_1a" />
+    </key>
   </component>
   <component name="RunManager" selected="Python.main (1)">
-    <configuration name="main (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="DecisionTreeClassifier" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="MAIR_1" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/assignment_1a" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/assignment_1a/DecisionTreeClassifier.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="SupportVectorMachine" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="MAIR_1" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/assignment_1a" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/assignment_1a/SupportVectorMachine.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="add_manual_restaurant_charasteristic" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="MAIR_1" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -71,7 +125,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/assignment_1c/main.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/assignment_1c/add_manual_restaurant_charasteristic.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -80,7 +134,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="main c" type="PythonConfigurationType" factoryName="Python">
+    <configuration name="main (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="MAIR_1" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -89,9 +143,8 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="Python 3.11" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/assignment_1c" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
@@ -128,13 +181,18 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.main c" />
+      <item itemvalue="Python.DecisionTreeClassifier" />
+      <item itemvalue="Python.SupportVectorMachine" />
+      <item itemvalue="Python.add_manual_restaurant_charasteristic" />
       <item itemvalue="Python.main" />
       <item itemvalue="Python.main (1)" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.main (1)" />
+        <item itemvalue="Python.SupportVectorMachine" />
+        <item itemvalue="Python.DecisionTreeClassifier" />
+        <item itemvalue="Python.add_manual_restaurant_charasteristic" />
         <item itemvalue="Python.main" />
       </list>
     </recent_temporary>
@@ -173,16 +231,35 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/assignment_1c/dialog_system.py</url>
-          <line>144</line>
+          <line>145</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/MAIR_1$dialog_system.coverage" NAME="dialog_system Coverage Results" MODIFIED="1728167953572" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assignment_1c" />
+    <SUITE FILE_PATH="coverage/MAIR_1$test__1_.coverage" NAME="test (1) Coverage Results" MODIFIED="1728175285749" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/MAIR_1$dialog_system__1_.coverage" NAME="dialog_system (1) Coverage Results" MODIFIED="1727128512557" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assignment_1b" />
+    <SUITE FILE_PATH="coverage/MAIR_1$dialog_system_old__1_.coverage" NAME="dialog_system_old (1) Coverage Results" MODIFIED="1727129402823" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assignment_1b" />
+    <SUITE FILE_PATH="coverage/MAIR_1$DTC.coverage" NAME="DTC Coverage Results" MODIFIED="1726511674435" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/MAIR_1$aux.coverage" NAME="aux Coverage Results" MODIFIED="1727338674939" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assignment_1b" />
-    <SUITE FILE_PATH="coverage/MAIR_1$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1728237178589" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assignment_1c" />
-    <SUITE FILE_PATH="coverage/MAIR_1$main.coverage" NAME="main Coverage Results" MODIFIED="1728229966400" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assignment_1b" />
-    <SUITE FILE_PATH="coverage/MAIR_1$main_c.coverage" NAME="main c Coverage Results" MODIFIED="1728230488118" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/MAIR_1$code_1b.coverage" NAME="code_1b Coverage Results" MODIFIED="1727127141007" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assignment_1b" />
+    <SUITE FILE_PATH="coverage/MAIR_1$FNN.coverage" NAME="FNN Coverage Results" MODIFIED="1726512775049" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/MAIR_1$baselines.coverage" NAME="baselines Coverage Results" MODIFIED="1728230519976" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assignment_1a" />
+    <SUITE FILE_PATH="coverage/MAIR_1$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1728245688534" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assignment_1c" />
+    <SUITE FILE_PATH="coverage/MAIR_1$FeedforwardNeuralNetwork.coverage" NAME="FeedforwardNeuralNetwork Coverage Results" MODIFIED="1728232072166" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assignment_1a" />
+    <SUITE FILE_PATH="coverage/MAIR_1$dataProcessing.coverage" NAME="dataProcessing Coverage Results" MODIFIED="1728229875121" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assignment_1a" />
+    <SUITE FILE_PATH="coverage/MAIR_1$add_manual_restaurant_charasteristic.coverage" NAME="add_manual_restaurant_charasteristic Coverage Results" MODIFIED="1728241988388" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assignment_1c" />
+    <SUITE FILE_PATH="coverage/MAIR_1$code_1b__1_.coverage" NAME="code_1b (1) Coverage Results" MODIFIED="1727128205829" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assignment_1b" />
+    <SUITE FILE_PATH="coverage/MAIR_1$test.coverage" NAME="test Coverage Results" MODIFIED="1728174801464" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assignment_1c" />
+    <SUITE FILE_PATH="coverage/MAIR_1$main_c.coverage" NAME="main c Coverage Results" MODIFIED="1728241710514" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/MAIR_1$DecisionTreeClassifier.coverage" NAME="DecisionTreeClassifier Coverage Results" MODIFIED="1728245048985" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assignment_1a" />
+    <SUITE FILE_PATH="coverage/MAIR_1$SupportVectorMachine.coverage" NAME="SupportVectorMachine Coverage Results" MODIFIED="1728245053568" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assignment_1a" />
+    <SUITE FILE_PATH="coverage/MAIR_1$SVM.coverage" NAME="SVM Coverage Results" MODIFIED="1726516383783" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/MAIR_1$restaurant_selector.coverage" NAME="restaurant_selector Coverage Results" MODIFIED="1728241001846" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assignment_1c" />
+    <SUITE FILE_PATH="coverage/MAIR_1$main__2_.coverage" NAME="main (2) Coverage Results" MODIFIED="1728231665540" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assignment_1c" />
+    <SUITE FILE_PATH="coverage/MAIR_1$main.coverage" NAME="main Coverage Results" MODIFIED="1728241327019" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assignment_1b" />
+    <SUITE FILE_PATH="coverage/MAIR_1$main__3_.coverage" NAME="main (3) Coverage Results" MODIFIED="1728145161649" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
   </component>
 </project>
