@@ -32,3 +32,8 @@ The new features we implemented in 1c are the following:
 - A user is now able to change previous answers if there is no suggestions available.
 - The system now has a more human-like delay before showing response.
 - A user can now receive formal and informal reactions.
+
+
+# Example
+![example dialog](https://github.com/user-attachments/assets/600bcdc7-1f2f-45bf-b03a-92161b2845a4)
+
