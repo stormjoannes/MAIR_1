@@ -84,14 +84,20 @@ class DialogManager:
             self.println("Do you have any specific requirements like needing a romantic setting or a place suitable for children?")
 
     def extract_additional_preferences(self, user_input):
+        print("IN THE ADDITIONAL PREFERENCES FUNCTION")
+        print("USER INPUT: ", user_input, "type: ", type(user_input))
         if 'romantic' in user_input or 'children' in user_input:
+            print("SPECIFIC REQUIREMENTS DETECTED")
             if 'romantic' in user_input:
+                print("ROMANCTIC PREFERENCE")
                 self.preferences['romantic'] = True if 'yes' in user_input or 'romantic' in user_input else False
             if 'children' in user_input:
+                print("CHILDREN PREFERENCE")
                 self.preferences['children'] = True if 'yes' in user_input or 'children' in user_input else False
             self.state = "make_recommendation"
         else:
-            self.state = "ask_additional_requirements"  # Ensure correct state transition
+            print("CAN'T GET INTO ADDITIONAL PREFERENCE LOOP")
+            self.state = "ask_specific_requirements"  # Ensure correct state transition
 
     def redirection(self, category):
         if self.state != "welcome":
@@ -136,15 +142,15 @@ class DialogManager:
         return all(self.preferences[key] is not None for key in ['location', 'food_type', 'price_range'])
 
     def make_recommendation(self):
-        # Applying rules to determine properties like 'romantic' and 'children'
-        properties = self.apply_rules()
+        # # Applying rules to determine properties like 'romantic' and 'children'
+        # properties = self.apply_rules()
 
         # Making recommendation based on preferences and inferred properties
         filtered_restaurants = self.restaurant_selector.recommend_restaurant(
             self.preferences['food_type'],
             self.preferences['price_range'],
             self.preferences['location'],
-            properties  # Pass the inferred properties
+            self.preferences  # Pass the inferred properties
         )
         if isinstance(filtered_restaurants, str):
             self.println(filtered_restaurants)

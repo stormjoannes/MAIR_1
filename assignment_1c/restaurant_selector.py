@@ -22,7 +22,7 @@ class RestaurantSelector:
         # Dynamically determine which rules to apply based on user preferences
         properties = {}
         # Rule 1: Cheap and good food attracts tourists
-        if user_preferences.get('price_range') == 'cheap' and restaurant['food_quality'] == 'good':
+        if user_preferences.get('price_range') == 'cheap' and restaurant['length_of_stay'] == 'short':
             properties['touristic'] = True
         # Rule 2: Romanian cuisine is not typically touristic
         if restaurant['food'] == 'Romanian':
@@ -55,10 +55,10 @@ class RestaurantSelector:
 
         # Further filtering based on specific user preferences for properties like 'romantic' and 'children'
         if user_preferences:
-            if 'romantic' in user_preferences:
+            if user_preferences['romantic']:
                 filtered_restaurants = filtered_restaurants[
                     filtered_restaurants['romantic'] == user_preferences['romantic']]
-            if 'children' in user_preferences:
+            if user_preferences['children']:
                 filtered_restaurants = filtered_restaurants[
                     filtered_restaurants['children'] == user_preferences['children']]
 
