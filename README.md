@@ -15,17 +15,17 @@ The machine learning models used are:
 
 Functions used by multiple files are located in `utils.py`.
 
-### Usage
+#### Usage
 To get results from the models simply run the dedicated file.
 These files should completely run without any additional input.
-
-Normally you would't add data files to your github, but since this simplifies the process of running the code we have included the dataset in the `data` folder.
+The output of these files will also be shown, however if you want the full analysis of these models you should read the report that belongs to 1a.
 
 ## Assignments 1b & 1c
-This repository contains the code for the first assignment of the Methods in AI Research course at Utrecht University. The assignment consists of implementing a dialog system to help someone finding a restaurant in Cambridge.
+The assignment consists of implementing a dialog system to help someone finding a restaurant in Cambridge.
 
 To use the dialog system simply run the `main.py` file. This will start the dialog system and you can start asking questions.
-The new features we implemented are the following:
+
+The new features we implemented in 1c are the following:
 - Levenshtein edit distance for preference extraction
 - A user can now restart the questions by saying 'restart' after the suggestion.
 - A user can now receive a small amount of recommendations instead of one.
