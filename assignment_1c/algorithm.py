@@ -30,38 +30,34 @@ class TextProcessor:
         closest_word = None
         min_distance = float('inf')
 
-        # Create a memoization dictionary for the levenshtein distance function
-        memo = {}
-
         for new_word in category_words:
-            distance = self.levenshtein_memoized(word, new_word, len(word), len(new_word), memo)
-            if distance < min_distance and distance <= threshold or word == new_word:
+            distance = self.levenshtein_distance(word, new_word)
+            if distance < min_distance and distance <= threshold:
                 closest_word = new_word
                 min_distance = distance
+
         return closest_word
 
-    def levenshtein_memoized(self, str1, str2, m, n, memo):
-        # Memoization check
-        if (m, n) in memo:
-            return memo[(m, n)]
+    def levenshtein_distance(self, str1, str2):
+        memo = [[0] * (len(str2) + 1) for _ in range(len(str1) + 1)]
 
-        if m == 0:
-            return n
-        if n == 0:
-            return m
+        # Initialize base cases (when one string is empty)
+        for i in range(len(str1) + 1):
+            memo[i][0] = i
+        for j in range(len(str2) + 1):
+            memo[0][j] = j
 
-        if str1[m - 1] == str2[n - 1]:
-            result = self.levenshtein_memoized(str1, str2, m - 1, n - 1, memo)
-        else:
-            result = 1 + min(
-                self.levenshtein_memoized(str1, str2, m, n - 1, memo),  # Insert
-                self.levenshtein_memoized(str1, str2, m - 1, n, memo),  # Remove
-                self.levenshtein_memoized(str1, str2, m - 1, n - 1, memo)  # Replace
-            )
+        # Fill the memo table
+        for i in range(1, len(str1) + 1):
+            for j in range(1, len(str2) + 1):
+                if str1[i - 1] == str2[j - 1]:
+                    memo[i][j] = memo[i - 1][j - 1]
+                else:
+                    memo[i][j] = 1 + min(memo[i - 1][j],  # Deletion
+                                         memo[i][j - 1],  # Insertion
+                                         memo[i - 1][j - 1])  # Substitution
 
-        # Store result in memo before returning
-        memo[(m, n)] = result
-        return result
+        return memo[len(str1)][len(str2)]
 
     def categorize_words(self, sentence):
         sentence_words = sentence.lower().split()
