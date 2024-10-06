@@ -53,20 +53,14 @@ class RestaurantSelector:
         filtered_restaurants = filtered_restaurants.apply(lambda x: self.apply_inference_rules(x, user_preferences),
                                                           axis=1)
 
-        # Further filtering based on specific user preferences for properties like 'romantic' and 'children'
-        if user_preferences:
-            if user_preferences['romantic']:
-                filtered_restaurants = filtered_restaurants[
-                    filtered_restaurants['romantic'] == user_preferences['romantic']]
-            if user_preferences['children']:
-                filtered_restaurants = filtered_restaurants[
-                    filtered_restaurants['children'] == user_preferences['children']]
-            if user_preferences['touristic']:
-                filtered_restaurants = filtered_restaurants[
-                    filtered_restaurants['touristic'] == user_preferences['touristic']]
-            if user_preferences['assigned_seats']:
-                filtered_restaurants = filtered_restaurants[
-                    filtered_restaurants['assigned_seats'] == user_preferences['assigned_seats']]
+        # Further filtering based on specific user preferences for properties
+        for preference in ['romantic', 'children', 'touristic', 'assigned_seats']:
+            if user_preferences.get(preference):
+                if len(filtered_restaurants.get(preference, [])):
+                    filtered_restaurants = filtered_restaurants[
+                        filtered_restaurants[preference] == user_preferences[preference]]
+                else:
+                    print(f"System: Sorry, no restaurant matches your additional preference for '{preference}', so it won't be taken into account.")
 
         if filtered_restaurants.empty:
             return "System: Sorry, no restaurant matches your preferences."
