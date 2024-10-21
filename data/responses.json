@@ -1,0 +1,106 @@
+{
+  "welcome": {
+    "hello": {
+      "efficient": "Welcome! Please, tell me the location where you want to find a restaurant.",
+      "conversational": "Hi there! Where can I help you find a great place to eat?"
+    },
+    "inform": {
+      "efficient": "Could you please provide the information?",
+      "conversational": "Awesome! Let me know what you're looking for."
+    }
+  },
+  "ask_location": {
+    "inform": {
+      "efficient": "Got it, you're looking for a restaurant in {location}.",
+      "conversational": "Cool! You're searching for a place to eat around {location}, right?"
+    },
+    "location_not_found": {
+      "efficient": "Could you please tell me the location?",
+      "conversational": "Hmm, I didn't catch that. Can you let me know where you'd like to eat?"
+    }
+  },
+  "ask_food_type": {
+    "inform": {
+      "efficient": "Great, you're looking for {food_type} food.",
+      "conversational": "Nice! So you're craving {food_type} food!"
+    },
+    "food_not_found": {
+      "efficient": "Could you please tell me the type of food you prefer?",
+      "conversational": "What's your favorite type of food? Let me know!"
+    }
+  },
+  "ask_price_range": {
+    "inform": {
+      "efficient": "You're looking for a {price_range} restaurant.",
+      "conversational": "So you're thinking about a {price_range} spot to eat?"
+    },
+    "price_not_found": {
+      "efficient": "Could you please tell me your price range?",
+      "conversational": "What price range are you looking for? Cheap, moderate, or expensive?"
+    }
+  },
+  "ask_specific_requirements": {
+    "affirm": {
+      "efficient": "Please specify if you need a romantic setting, touristic restaurant, assigned seats, or a place suitable for children.",
+      "conversational": "Alright! Let me know if you want a romantic vibe, something touristic, assigned seating, or if it's kid-friendly!"
+    }
+  },
+  "make_recommendation": {
+    "affirm": {
+      "efficient": "I have some recommendations for you based on your preferences.",
+      "conversational": "I've got a few great spots in mind that match what you're looking for!"
+    }
+  },
+  "no_match": {
+    "negate": {
+      "efficient": "Sorry, have a great day! Goodbye.",
+      "conversational": "Oh, I’m sorry! Hope you have an awesome day. Goodbye!"
+    }
+  },
+  "changes": {
+    "inform": {
+      "efficient": "Do you want to change the {preference} of the restaurant?",
+      "conversational": "Would you like to change the {preference}? Let me know!"
+    },
+    "negate": {
+      "efficient": "Okay!",
+      "conversational": "Alrighty!"
+    }
+  },
+  "request_further_details": {
+    "affirm": {
+      "efficient": "The phone number is {phone}. Do you want the address?",
+      "conversational": "The phone number for the restaurant is {phone}. Do you need the address too?"
+    },
+    "negate": {
+      "efficient": "Okay, have a great day! Goodbye.",
+      "conversational": "Alright, have an awesome day! Goodbye!"
+    }
+  },
+  "provide_address": {
+    "affirm": {
+      "efficient": "The address is {address}. Would you like the postal code?",
+      "conversational": "Here’s the address: {address}. Do you want the postal code too?"
+    },
+    "negate": {
+      "efficient": "Alright. Thank you, goodbye!",
+      "conversational": "Okay, thanks! Goodbye!"
+    }
+  },
+  "provide_postalcode": {
+    "affirm": {
+      "efficient": "The postal code is {postcode}. Thank you for using the system!",
+      "conversational": "Here’s the postal code: {postcode}. Thanks for chatting with me!"
+    },
+    "negate": {
+      "efficient": "Okay, have a nice day!",
+      "conversational": "Got it! Have a great day!"
+    }
+  },
+  "goodbye": {
+    "default": {
+      "efficient": "Goodbye. Thank you for using our service.",
+      "conversational": "See you soon! Thanks for chatting!"
+    }
+  }
+}

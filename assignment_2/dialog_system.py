@@ -39,13 +39,31 @@ class DialogManager:
         self.transparent = transparent
         self.memory = memory
 
-    def println(self, output):
+    def generate_response(self, efficient_text, conversational_text):
+        """Generates the response based on the language style."""
+        if self.language_style == 'conversational':
+            return conversational_text
+        elif self.language_style == 'efficient':
+            return efficient_text
+        else:
+            return efficient_text  # Default to efficient if style is undefined
+
+    def println(self, efficient_output, conversational_output):
         """Prints the output with a typing effect for delay of response."""
         typing_text = 'typing...'
         print(typing_text, end='', flush=True)
         time.sleep(self.response_delay)  # Wait for 2 seconds
+        output = self.generate_response(efficient_output, conversational_output)
         print('\r' + f"System: {output}", end='', flush=True)
-        print()  # Move to the next line
+        print()
+
+    def print_single_ln(self, output):
+        """Prints the output line with delay"""
+        typing_text = 'typing...'
+        print(typing_text, end='', flush=True)
+        time.sleep(self.response_delay)  # Wait for 2 seconds
+        print('\r' + f"System: {output}", end='', flush=True)
+        print()
 
     def classify_dialog_act(self, user_utterance):
         """Classify the dialog act of the user utterance using the Decision Tree classifier."""
@@ -55,32 +73,32 @@ class DialogManager:
 
     def get_response(self):
         """Returns the response based on the current state and formality level."""
-        responses = {
-            "welcome": {
-                "formal": "Welcome! How may I assist you today?",
-                "informal": "Hey there! What can I do for ya?"
-            },
-            "goodbye": {
-                "formal": "Thank you for using our service. Goodbye!",
-                "informal": "Alright, take care!"
-            }
-        }
-        return responses[self.state][self.formality]
+
+        if self.state == "welcome":
+            return "Hey there! What can I do for ya?", "Welcome! How may I assist you today?"
+        elif self.state == "goodbye":
+            return "Alright, take care!", "Thank you for using our service. Goodbye!"
+        return None
 
     def reset_dialog(self):
         """Resets the dialog state and preferences to the initial state."""
         self.state = "welcome"
         self.preferences = {key: None for key in self.preferences}
         self.formality = "formal"
-        self.println("The dialog has been reset. How may I assist you?")
+        self.println("Resetted. How can I help you?",
+                     "The dialog has been reset. How may I assist you?")
 
     def ask_additional_requirements(self):
         """Asks the user for additional requirements like romantic setting or a place suitable for children."""
         if self.preferences.get('romantic') is not None or self.preferences.get('children') is not None:
-            self.println("Got it. Let's find the perfect spot for you!")
+            self.println(
+                "Any other requirements?",
+                "Got it, do you have any other preferences?"
+            )
             self.state = "make_recommendation"
         else:
-            self.println("Do you have any specific requirements like needing a romantic setting or a place suitable for children?")
+            self.println("Do you have specific requirement, like a romantic setting or a place suitable for children?",
+                         "Do you have any specific requirements like needing a romantic setting or a place suitable for children?")
 
     def extract_additional_preferences(self, user_input):
         """Extracts the additional preferences like romantic setting or a place suitable for children."""
@@ -157,8 +175,9 @@ class DialogManager:
             self.preferences  # Pass the inferred properties
         )
         if isinstance(filtered_restaurants, str):
-            self.println(filtered_restaurants)
-            self.println("Do you want to modify any preference in order to keep searching?")
+            self.print_single_ln(filtered_restaurants)
+            self.println("Do you want to modify any preferences to keep searching?",
+                         "Would you like to modify any preference in order to keep searching?")
             self.state = "no_match"
             return
 
@@ -169,7 +188,7 @@ class DialogManager:
             recommendation = filtered_restaurants.sample(n=1).iloc[0]
             recommendations[i + 1] = recommendation
             filtered_restaurants.drop(recommendation.name, inplace=True)
-            self.println(f"Recommendation {i + 1}: '{recommendation['restaurantname']}', a(n) {recommendation['pricerange']} {recommendation['food']} restaurant in the {recommendation['area']}.")
+            self.print_single_ln(f"Recommendation {i + 1}: '{recommendation['restaurantname']}', a(n) {recommendation['pricerange']} {recommendation['food']} restaurant in the {recommendation['area']}.")
 
         self.recommendation_selector(recommendations)
 
@@ -178,16 +197,19 @@ class DialogManager:
     def recommendation_selector(self, recommendations):
         """Selects a restaurant from the recommendations based on user input."""
         if len(recommendations) > 1:
-            self.println(f"Which restaurant would you like more information about {tuple(recommendations.keys())}?")
+            self.println(f"Which restaurant do you want more information about {tuple(recommendations.keys())}?",
+                         f"Which restaurant would you like more information about? Please select a number from {tuple(recommendations.keys())}.")
 
             while True:
                 user_input = int(input("You: "))
                 if user_input in recommendations.keys():
                     self.restaurant = recommendations[user_input]
-                    self.println(f"You selected '{self.restaurant['restaurantname']}'. Do you want the phone number?")
+                    self.println(f"You selected '{self.restaurant['restaurantname']}'. Do you want the phone number?",
+                                 f"Great choice! Do you want the phone number of '{self.restaurant['restaurantname']}'?")
                     break
                 else:
-                    self.println("Please select a valid recommendation number.")
+                    self.println("Invalid selection.",
+                                 f"Number {user_input} is not available. Please select a valid recommendation number.")
         else:
             self.restaurant = recommendations
 
@@ -195,7 +217,8 @@ class DialogManager:
         """Handles the dialog state based on the dialog act and user utterance."""
         if self.state == "welcome":
             if dialog_act == "hello":
-                self.println("Welcome! Please, tell me the location where you want to find a restaurant.")
+                self.println("Welcome. Please provide a location.",
+                             "Hey there! Where would you like to find a restaurant?")
                 self.state = "ask_location"
             elif dialog_act == "inform":
                 self.extract_preferences(user_utterance)
@@ -209,9 +232,10 @@ class DialogManager:
                 self.reset_dialog()
             elif dialog_act in ["bye", "negate"]:
                 self.state = "goodbye"
-                self.println(self.get_response())
+                self.println(*self.get_response())
             else:
-                self.println("Sorry, I didn't understand. Could you tell me your preferences again?")
+                self.println("Sorry, didn't understand.",
+                             "Hmm, I didn’t quite catch that. Could you tell me your preferences again?")
 
         elif self.state == "start_over":
             self.reset_dialog()
@@ -221,52 +245,62 @@ class DialogManager:
                 self.extract_preferences(user_utterance, 'location')
                 if self.preferences["location"]:
                     if self.preferences["location"] == 'blank':
-                        self.println("Understood, you don't have a specific location in mind for the restaurant.")
+                        self.println("No location preference.",
+                                     "Understood, you don't have a specific location in mind for the restaurant.")
                     else:
-                        self.println(f"Got it, you're looking for a restaurant in {self.preferences['location']}.")
+                        self.println(f"Location: {self.preferences['location']}.",
+                                     f"Got it, you're looking for a restaurant in {self.preferences['location']}.")
                     self.redirection("location")
                 else:
-                    self.println("Could you please tell me the location you want to find a restaurant?")
+                    self.println("Where do you want to find a restaurant?",
+                                 "Could you please tell me the location you want to find a restaurant?")
             elif dialog_act in ["bye", "negate"]:
                 self.state = "goodbye"
-                self.println(self.get_response())
+                self.println(*self.get_response())
 
         elif self.state == "ask_food_type":
             if dialog_act == "inform":
                 self.extract_preferences(user_utterance, 'food_type')
                 if self.preferences["food_type"]:
                     if self.preferences["food_type"] == 'blank':
-                        self.println("Understood, you don't have a specific food type in mind.")
+                        self.println("No food type chosen.",
+                                     "Understood, you don't have a specific food type in mind.")
                     else:
-                        self.println(f"Great, you're looking for {self.preferences['food_type']} food.")
+                        self.println(f"Looking for {self.preferences['food_type']} food.",
+                                     f"Great, you're looking for {self.preferences['food_type']} food.")
                     self.redirection("food_type")
                 else:
-                    self.println("Could you please tell me the type of food you prefer?")
+                    self.println("What kind of food do you want?",
+                                 "Could you please tell me the type of food you prefer?")
             elif dialog_act in ["bye", "negate"]:
                 self.state = "goodbye"
-                self.println(self.get_response())
+                self.println(*self.get_response())
 
         elif self.state == "ask_price_range":
             if dialog_act == "inform":
                 self.extract_preferences(user_utterance, 'price_range')
                 if self.preferences["price_range"]:
                     if self.preferences["price_range"] == 'blank':
-                        self.println("Understood, you don't have a specific price range in mind.")
+                        self.println("No specific price range.",
+                                     "Understood, you don't have a specific price range in mind.")
                     else:
-                        self.println(f"You're looking for a(n) {self.preferences['price_range']} restaurant.")
+                        self.println(f"Looking for a(n) {self.preferences['price_range']} restaurant.",
+                                     f"You're looking for a(n) {self.preferences['price_range']} restaurant.")
                     self.redirection("price_range")
                 else:
-                    self.println("Could you please tell me your price range (choose from cheap, moderate, expensive)?")
+                    self.println("In what price range (cheap, moderate, expensive)?",
+                                 "Could you please tell me your price range (choose from cheap, moderate, expensive)?")
             elif dialog_act in ["bye", "negate"]:
                 self.state = "goodbye"
-                self.println(self.get_response())
+                self.println(*self.get_response())
 
         elif self.state == "ask_specific_requirements":
             if dialog_act == "negate":
                 self.response = False
                 self.state = "make_recommendation"
             elif dialog_act == "affirm":
-                self.println("Please specify if you need a romantic setting, touristic restaurant, assigned seats or a place suitable for children.")
+                self.println("Any specific requirements like a romantic setting or a place suitable for children?",
+                             "Please specify if you need a romantic setting, touristic restaurant, assigned seats or a place suitable for children.")
             else:
                 self.extract_additional_preferences(user_utterance)
                 self.response = False
@@ -277,7 +311,8 @@ class DialogManager:
 
         elif self.state == "no_match":
             if dialog_act == "negate":
-                self.println("Sorry, have a great day! Goodbye.")
+                self.println("Sorry, Goodbye!",
+                             "Sorry, have a great day! Goodbye.")
                 self.state = "change_preferences"
             else:
                 self.response = False
@@ -287,7 +322,7 @@ class DialogManager:
             if dialog_act == "inform":
                 self.changes_counter -= 1
             elif dialog_act == "negate":
-                self.println("Okay!")
+                self.println("Okay!", "Okay!")
             else:
                 self.preferences[self.preferences_name[self.changes_counter]] = None
             self.changes_counter += 1
@@ -297,31 +332,38 @@ class DialogManager:
                 self.response = False
                 self.state = "welcome"
             else:
-                self.println(f"Do you want to change the {self.preferences_name[self.changes_counter]} of the restaurant? (Yes/No)")
+                self.println(f"Change the {self.preferences_name[self.changes_counter]} of the restaurant? (Yes/No)",
+                             f"Do you want to change the {self.preferences_name[self.changes_counter]} of the restaurant? (Yes/No)")
                 self.state = "changes"
 
         elif self.state == "request_further_details":
             if dialog_act == "negate":
-                self.println("Okay, have a great day! Goodbye.")
+                self.println("Okay, Goodbye!",
+                             "Okay, have a great day! Goodbye.")
                 self.state = "goodbye"
             else:
-                self.println(f"The phone number is {self.restaurant['phone']}. Do you want the address?")
+                self.println(f"Phone number: {self.restaurant['phone']}. Do you want the address?",
+                             f"The phone number is {self.restaurant['phone']}. Do you want the address?")
                 self.state = "provide_address"
 
         elif self.state == "provide_address":
             if dialog_act == "negate":
-                self.println("Alright. Thank you, goodbye!")
+                self.println("Alright Goodbye!",
+                             "Alright. Thank you, goodbye!")
                 self.state = "goodbye"
             else:
-                self.println(f"The address is {self.restaurant['addr']}. Would you like the postal code?")
+                self.println(f"Adress: {self.restaurant['addr']}. Do you want the postal code?",
+                             f"The address is {self.restaurant['addr']}. Would you like the postal code?")
                 self.state = "provide_postalcode"
 
         elif self.state == "provide_postalcode":
             if dialog_act == "negate":
-                self.println("Okay, have a nice day!")
+                self.println("Okay, Goodbye!",
+                             "Okay, have a nice day!")
                 self.state = "goodbye"
             else:
-                self.println(f"The postal code is {self.restaurant['postcode']}. Thank you for using the system!")
+                self.println(f"Postal code: {self.restaurant['postcode']}. Thank you for using the system!",
+                             f"The postal code is {self.restaurant['postcode']}. Thank you for using the system!")
                 self.state = "goodbye"
 
     def next_state(self, user_utterance):
@@ -335,7 +377,7 @@ class DialogManager:
         self.formality = random.choice(["formal", "informal"])
 
         # Welcome the user
-        self.println(self.get_response())
+        self.println(*self.get_response())
 
         while self.state != "goodbye":
             if self.response:

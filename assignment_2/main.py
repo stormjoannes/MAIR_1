@@ -2,9 +2,10 @@ from dialog_system import DialogManager
 
 
 def main():
-    anthropomorphic = True
+    anthropomorphic = False
     amount_of_recommendations = 3
 
+    # Experiment setup for the anthropomorphic dialog system
     if anthropomorphic:
         response_delay = 2
         language_style = "conversational"
