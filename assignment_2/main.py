@@ -2,7 +2,7 @@ from dialog_system import DialogManager
 
 
 def main():
-    anthropomorphic = False
+    anthropomorphic = True
     amount_of_recommendations = 3
 
     # Experiment setup for the anthropomorphic dialog system

@@ -75,7 +75,7 @@ class DialogManager:
         """Returns the response based on the current state and formality level."""
 
         if self.state == "welcome":
-            return "Hey there! What can I do for ya?", "Welcome! How may I assist you today?"
+            return "Hi, you're talking with a virtual chatbot, what can i do for you?", "Welcome! How may I assist you today?"
         elif self.state == "goodbye":
             return "Alright, take care!", "Thank you for using our service. Goodbye!"
         return None
@@ -217,8 +217,8 @@ class DialogManager:
         """Handles the dialog state based on the dialog act and user utterance."""
         if self.state == "welcome":
             if dialog_act == "hello":
-                self.println("Welcome. Please provide a location.",
-                             "Hey there! Where would you like to find a restaurant?")
+                self.println("Please provide a location. (north, south, east, west)",
+                             "Where would you like to find a restaurant? (north, south, east, west)")
                 self.state = "ask_location"
             elif dialog_act == "inform":
                 self.extract_preferences(user_utterance)
@@ -252,8 +252,8 @@ class DialogManager:
                                      f"Got it, you're looking for a restaurant in {self.preferences['location']}.")
                     self.redirection("location")
                 else:
-                    self.println("Where do you want to find a restaurant?",
-                                 "Could you please tell me the location you want to find a restaurant?")
+                    self.println("Where do you want to find a restaurant? (north, south, east, west, dontcare)",
+                                 "Could you please tell me the location you want to find a restaurant? (north, south, east, west, dontcare)")
             elif dialog_act in ["bye", "negate"]:
                 self.state = "goodbye"
                 self.println(*self.get_response())
@@ -270,8 +270,8 @@ class DialogManager:
                                      f"Great, you're looking for {self.preferences['food_type']} food.")
                     self.redirection("food_type")
                 else:
-                    self.println("What kind of food do you want?",
-                                 "Could you please tell me the type of food you prefer?")
+                    self.println("What kind of food do you want? (e.g. Italian, Chinese)",
+                                 "Could you please tell me the type of food you prefer? (e.g. Italian, Chinese)")
             elif dialog_act in ["bye", "negate"]:
                 self.state = "goodbye"
                 self.println(*self.get_response())
