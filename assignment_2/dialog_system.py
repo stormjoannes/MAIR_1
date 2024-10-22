@@ -187,37 +187,40 @@ class DialogManager:
             recommendation = filtered_restaurants.sample(n=1).iloc[0]
             recommendations[i + 1] = recommendation
             filtered_restaurants.drop(recommendation.name, inplace=True)
-            self.print_single_ln(f"Recommendation {i + 1}: '{recommendation['restaurantname']}', a(n) {recommendation['pricerange']} {recommendation['food']} restaurant in the {recommendation['area']}.")
 
-        self.recommendation_selector(recommendations)
+            if self.amount_of_recommendations > 1:
+                self.print_single_ln(f"Recommendation {i + 1}: '{recommendation['restaurantname']}', a(n) {recommendation['pricerange']} {recommendation['food']} restaurant in the {recommendation['area']}.")
+            else:
+                self.print_single_ln(f"We recommend you '{recommendation['restaurantname']}', a(n) {recommendation['pricerange']} {recommendation['food']} restaurant in the {recommendation['area']}.")
+                self.restaurant = recommendations[1]
+
+        if self.amount_of_recommendations > 1:
+            self.recommendation_selector(recommendations)
 
         self.state = "request_further_details"
 
     def recommendation_selector(self, recommendations):
         """Selects a restaurant from the recommendations based on user input."""
-        if len(recommendations) > 1:
-            self.println(f"Which restaurant do you want more information about {tuple(recommendations.keys())}?",
-                         f"Which restaurant would you like more information about? Please select a number from {tuple(recommendations.keys())}.")
+        self.println(f"Which restaurant do you want more information about {tuple(recommendations.keys())}?",
+                     f"Which restaurant would you like more information about? Please select a number from {tuple(recommendations.keys())}.")
 
-            while True:
-                user_input = int(input("You: "))
-                if user_input in recommendations.keys():
-                    self.restaurant = recommendations[user_input]
-                    self.println(f"You selected '{self.restaurant['restaurantname']}'. Do you want the phone number?",
-                                 f"Great choice! Do you want the phone number of '{self.restaurant['restaurantname']}'?")
-                    break
-                else:
-                    self.println("Invalid selection.",
-                                 f"Number {user_input} is not available. Please select a valid recommendation number.")
-        else:
-            self.restaurant = recommendations
+        while True:
+            user_input = int(input("You: "))
+            if user_input in recommendations.keys():
+                self.restaurant = recommendations[user_input]
+                self.println(f"You selected '{self.restaurant['restaurantname']}'. Do you want the phone number?",
+                             f"Great choice! Do you want the phone number of '{self.restaurant['restaurantname']}'?")
+                break
+            else:
+                self.println("Invalid selection.",
+                             f"Number {user_input} is not available. Please select a valid recommendation number.")
 
     def handle_state(self, dialog_act, user_utterance):
         """Handles the dialog state based on the dialog act and user utterance."""
         if self.state == "welcome":
             if dialog_act == "hello":
-                self.println("Please provide a location. (north, south, east, west)",
-                             "Where would you like to find a restaurant? (north, south, east, west)")
+                self.println("Please provide a location. (centre, north, south, east, west)",
+                             "Where would you like to find a restaurant? (centre, north, south, east, west)")
                 self.state = "ask_location"
             elif dialog_act == "inform":
                 self.extract_preferences(user_utterance)
@@ -384,8 +387,7 @@ class DialogManager:
 
                     for index, (key, value) in enumerate(last_three_items, start=1):
                         options.append(str(index))
-                        self.print_single_ln(
-                            f"{index}) {value['food_type']} food in the {value['area']} with a {value['price_range']} price range.")
+                        self.format_memory_suggestions(index, value)
 
                 self.print_single_ln("With which option would you like to continue? (say none to proceed with new preferences)")
                 user_input = input("You: ").lower()
@@ -402,6 +404,17 @@ class DialogManager:
                     return
 
             self.print_single_ln("Alright, let's start fresh. How can i help you?")
+
+    def format_memory_suggestions(self, index, user_preferences):
+        memory_suggestion_template = f"{index}) {user_preferences['food_type']} food in the {user_preferences['area']} area in a {user_preferences['price_range']} price range."
+        if user_preferences['food_type'] == 'blank':
+            memory_suggestion_template = memory_suggestion_template.replace('blank food', 'Any type of food')
+        if user_preferences['area'] == 'blank':
+            memory_suggestion_template = memory_suggestion_template.replace('the blank area', 'any area')
+        if user_preferences['price_range'] == 'blank':
+            memory_suggestion_template = memory_suggestion_template.replace('a blank price range', 'any price range')
+
+        self.print_single_ln(memory_suggestion_template)
 
     def run(self):
         """Runs the dialog system."""
