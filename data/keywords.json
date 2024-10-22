@@ -1,6 +1,6 @@
 {
     "ack": ["kay", "okay"],
-    "affirm": ["yes", "right", "yeah"],
+    "affirm": ["yes", "right", "yeah", "sure", "ok", "alright"],
     "thankyou": ["thank"],
     "bye": ["bye", "goodbye"],
     "confirm": ["is it", "does it", "do they"],

@@ -1,4 +1,6 @@
 import pandas as pd
+from datetime import datetime
+import json
 
 class RestaurantSelector:
     def __init__(self, csv_path='../data/restaurant_info.csv'):
@@ -57,6 +59,9 @@ class RestaurantSelector:
         filtered_restaurants = filtered_restaurants.apply(lambda x: self.apply_inference_rules(x, user_preferences),
                                                           axis=1)
 
+        # Read and append and preferences into the memory json file
+        self.write_to_memory(food_type, price_range, area, user_preferences)
+
         # Further filtering based on specific user preferences for properties
         for preference in ['romantic', 'children', 'touristic', 'assigned_seats']:
             if user_preferences.get(preference):
@@ -70,3 +75,24 @@ class RestaurantSelector:
             return "System: Sorry, no restaurant matches your preferences."
 
         return filtered_restaurants
+
+    @staticmethod
+    def write_to_memory(food_type, price_range, area, user_preferences):
+        try:
+            with open('../memory/memory.json', 'r') as f:
+                memory = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            memory = {}
+
+        body = {str(datetime.now()): {
+            "food_type": food_type,
+            "price_range": price_range,
+            "area": area,
+            "user_preferences": user_preferences
+        }}
+
+        memory.update(body)
+
+        # Write the updated memory back to the file, creating it if necessary
+        with open('../memory/memory.json', 'w') as f:
+            json.dump(memory, f, indent=4)

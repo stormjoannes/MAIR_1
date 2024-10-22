@@ -1,14 +1,14 @@
 from assignment_1a.DecisionTreeClassifier import vectorizer, clf_tree
 from algorithm import TextProcessor
 from restaurant_selector import RestaurantSelector
-import random
 import time
+import json
+import os
 
 
 class DialogManager:
     def __init__(self, amount_of_recommendations, response_delay, language_style, transparent, memory):
         self.state = "welcome"
-        self.formality = "formal"
         self.preferences = {
             "location": None,
             "food_type": None,
@@ -84,7 +84,6 @@ class DialogManager:
         """Resets the dialog state and preferences to the initial state."""
         self.state = "welcome"
         self.preferences = {key: None for key in self.preferences}
-        self.formality = "formal"
         self.println("Resetted. How can I help you?",
                      "The dialog has been reset. How may I assist you?")
 
@@ -371,13 +370,44 @@ class DialogManager:
         dialog_act = self.classify_dialog_act(user_utterance)
         self.handle_state(dialog_act, user_utterance)
 
+    def apply_memory(self):
+        # check if path of memory file exists and if memory is enabled
+        if self.memory and os.path.exists('../memory/memory.json'):
+            self.print_single_ln("I see that you've used this system before. Would you like choose between you're previous options?")
+            user_input = input("You: ").lower()
+            if self.classify_dialog_act(user_input) == "affirm":
+                with open('../memory/memory.json', 'r') as f:
+                    memory = json.load(f)
+                    options = []
+                    # Get the last 3 entries
+                    last_three_items = list(memory.items())[-3:]
+
+                    for index, (key, value) in enumerate(last_three_items, start=1):
+                        options.append(str(index))
+                        self.print_single_ln(
+                            f"{index}) {value['food_type']} food in the {value['area']} with a {value['price_range']} price range.")
+
+                self.print_single_ln("With which option would you like to continue? (say none to proceed with new preferences)")
+                user_input = input("You: ").lower()
+                while user_input not in options and user_input != 'none':
+                    self.print_single_ln("Please select a valid option.")
+                    user_input = input("You: ").lower()
+                if user_input in options:
+                    chosen_option = last_three_items[int(user_input) - 1]  # Get the corresponding option
+                    self.preferences = chosen_option[1]["user_preferences"]
+                    self.print_single_ln(
+                        f"Got it! You've chosen option {user_input}. I'll be giving you recommendations based on your previous preferences.")
+                    self.state = "make_recommendation"
+                    self.make_recommendation()
+                    return
+
+            self.print_single_ln("Alright, let's start fresh. How can i help you?")
+
     def run(self):
         """Runs the dialog system."""
-        # Pick random formality level, formal or informal
-        self.formality = random.choice(["formal", "informal"])
-
         # Welcome the user
         self.println(*self.get_response())
+        self.apply_memory()
 
         while self.state != "goodbye":
             if self.response:
